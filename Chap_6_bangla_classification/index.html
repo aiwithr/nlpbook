@@ -1,0 +1,2043 @@
+
+<!doctype html>
+<html lang="bn" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="'হাতেকলমে ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং: শুরুর ধারণা' 'রিকারেন্ট নিউরাল নেটওয়ার্কস' এবং 'লং শর্ট টার্ম মেমরি'">
+      
+      
+      
+        <meta name="author" content="রকিবুল হাসান">
+      
+      
+        <link rel="canonical" href="https://aiwithr.github.io/nlpbook/Chap_6_bangla_classification/">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক - হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=SiyamRupali:300,400,400i,700%7CSiyamRupali&display=fallback">
+        <style>:root{--md-text-font-family:"SiyamRupali";--md-code-font-family:"SiyamRupali"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          কনটেন্টে যান
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="হেডার">
+    <a href=".." title="হাতেকলমে &#39;বাংলা&#39; ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" class="md-header__button md-logo" aria-label="হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="সার্চ" placeholder="সার্চ" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="মুছে ফেলুন" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/raqueeb/mltraining/" title="রিপোজিটরিতে যান" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    raqueeb/mltraining
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="ন্যাভিগেশন" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="হাতেকলমে &#39;বাংলা&#39; ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" class="md-nav__button md-logo" aria-label="হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/raqueeb/mltraining/" title="রিপোজিটরিতে যান" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    raqueeb/mltraining
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toc/" class="md-nav__link">
+        বইয়ের সূচীপত্র, টেবিল অফ কনটেন্ট
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why-writing/" class="md-nav__link">
+        কেন বইটা লিখতে চাইলাম?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedication/" class="md-nav__link">
+        উৎসর্গ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../courtesy/" class="md-nav__link">
+        কৃতজ্ঞতা এবং বাড়তি রিডিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequence/" class="md-nav__link">
+        মানুষের এবং ভাষাগত সিকোয়েন্সের ধারণা
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn/" class="md-nav__link">
+        রিকারেন্ট নিউরাল নেটওয়ার্কসের গল্প
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../colab-github/" class="md-nav__link">
+        গুগল কোলাব এবং গিটহাবের ব্যবহার
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../token/" class="md-nav__link">
+        'এনএলপি' এর টোকেনাইজেশন
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text-preprocessing/" class="md-nav__link">
+        টেক্সট প্রি-প্রসেসিং এর ধারণা
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seq-padding/" class="md-nav__link">
+        টেক্সট থেকে সিকোয়েন্স এবং প্যাডিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oov-token/" class="md-nav__link">
+        'আউট অফ ভোকাবুলারি' টোকেন এবং প্যাড সিকোয়েন্স
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="টেবিল অফ কনটেন্ট">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      টেবিল অফ কনটেন্ট
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    বাংলা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    ইন্ডাস্ট্রি স্ট্যান্ডার্ড এপিআই
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    ডাটার সহজবোধ্যতা, ইন্টিগ্রিটি ঠিক রাখা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    ক্যাগলের মাল্টিক্লাস ক্লাসিফিকেশনের নিউজ ডাটাসেট
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    ৯টা ক্যাটাগরির ক্লাসিফিকেশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    দুটো অথেন্টিকেশন পদ্ধতি, গুগল কোলাব এবং ক্যাগল
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    আপলোড করে নেই অথেন্টিকেশন টোকেন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    ফাইল আপলোড
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    কোলাবের ‘ভার্চুয়াল লিনাক্স’ মেশিনে চালান লিনাক্স কমান্ড
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    জেসন ডাটাসেট, ক্যাগল থেকে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    গুগল কোলাবের বামে আছে 'ফাইলস' বাটন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    জেসন ফরম্যাট থেকে পাইথন লিস্টে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    শুরুতেই একটা উদাহরণ, জেসন দিয়ে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    আলাদা করে দুটো লিস্ট, ফিচার এবং লেবেল (বাংলা নিউজ ডাটাসেট)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    লেবেলগুলোকে সংখ্যায় নিয়ে আসি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    ‘মাল্টিক্লাস’ ক্লাসিফিকেশন এবং ‘লস’ ফাংশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    “ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    ‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ লস
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    কখন ব্যবহার করা যাবে?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    সাইকিট লার্নের 'ওয়ান হট এনকোডার'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    ট্রেনিং এবং টেস্ট স্প্লিট করে নেই এখানে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    কর্পাসের প্রতিটা শব্দকে টোকেন বানানোর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    নিউরাল নেটওয়ার্কে পাঠাতে দরকার 'প্যাডিং'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    'আউট অফ ভোকাবুলারি' শব্দগুলোকে ইনডেক্স ১ এ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    ট্রেনিং ডাটাকে ফিট করবো আলাদাভাবে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    পুরো ওয়ার্ড ইনডেক্স দেখা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    ভোকাবুলারি সাইজ ঠিক করে নিচ্ছি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    প্যাডিং, এখানে ম্যাক্সিমাম লেনথ ৫০০ শব্দ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    টেক্সট টু সিকোয়েন্স একটু দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    প্রথম ট্রেনিং সিকোয়েন্স প্রিন্ট করে দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    শব্দের এমবেডিং এর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    কম ডাইমেনশন দিয়ে শুরু করে দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    ট্রেনিং ডাটা, প্যাডিং করা সহ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    এমবেডিং লেয়ারের কাজ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    দুটো লস নিয়ে কাজ করে দেখুন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    মডেলটা দেখুন, সাধারণ সিকোয়েন্সিয়াল লেয়ার
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    দুটো 'লস' পদ্ধতি দিয়ে চেষ্টা করা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    মডেল সামারি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    ট্রেনিংয়ের সময় নিদেনপক্ষে ৬ ঘন্টা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    মডেলকে সেভ করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    অ্যাক্যুরেসি এবং লসকে প্লট করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    টেন্সরবোর্ড দিয়ে প্লটিং
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    দুটা উদাহরণ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    ওয়ার্ড এমবেডিংগুলোকে ডিস্কে সেভ করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    ভোকাবুলারি সাইজ এবং এমবেডিং ডাইমেনশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    শব্দকে ‘ভিজুয়ালাইজেশন’ - অনেক ডাইমেনশনে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    শব্দের এমবেডিংগুলোকে ‘ভিজুয়ালাইজেশন’
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    এমবেডিং প্রজেক্টরের জন্য ফাইল তৈরি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_48" class="md-nav__link">
+    এমবেডিং প্রজেক্টর
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_49" class="md-nav__link">
+    ডাউনলোড করে নেই ফাইল দুটো
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_50" class="md-nav__link">
+    কেরাস মডেলকে আবার লোড করে দেখি
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class-json/" class="md-nav__link">
+        বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chap_7_transformers_bert_Bangla/" class="md-nav__link">
+        হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../next/" class="md-nav__link">
+        ট্রান্সফরমার মডেল: কোথায় যাব সামনে?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_17" type="checkbox" id="__nav_17" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_17">
+          আমি কে?
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="আমি কে?" data-md-level="1">
+        <label class="md-nav__title" for="__nav_17">
+          <span class="md-nav__icon md-icon"></span>
+          আমি কে?
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rh/" class="md-nav__link">
+        কেন লিখছি এতো বই?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auto" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="টেবিল অফ কনটেন্ট">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      টেবিল অফ কনটেন্ট
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    বাংলা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    ইন্ডাস্ট্রি স্ট্যান্ডার্ড এপিআই
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    ডাটার সহজবোধ্যতা, ইন্টিগ্রিটি ঠিক রাখা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    ক্যাগলের মাল্টিক্লাস ক্লাসিফিকেশনের নিউজ ডাটাসেট
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    ৯টা ক্যাটাগরির ক্লাসিফিকেশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    দুটো অথেন্টিকেশন পদ্ধতি, গুগল কোলাব এবং ক্যাগল
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    আপলোড করে নেই অথেন্টিকেশন টোকেন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    ফাইল আপলোড
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    কোলাবের ‘ভার্চুয়াল লিনাক্স’ মেশিনে চালান লিনাক্স কমান্ড
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    জেসন ডাটাসেট, ক্যাগল থেকে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    গুগল কোলাবের বামে আছে 'ফাইলস' বাটন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    জেসন ফরম্যাট থেকে পাইথন লিস্টে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    শুরুতেই একটা উদাহরণ, জেসন দিয়ে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    আলাদা করে দুটো লিস্ট, ফিচার এবং লেবেল (বাংলা নিউজ ডাটাসেট)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    লেবেলগুলোকে সংখ্যায় নিয়ে আসি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    ‘মাল্টিক্লাস’ ক্লাসিফিকেশন এবং ‘লস’ ফাংশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    “ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    ‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ লস
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    কখন ব্যবহার করা যাবে?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    সাইকিট লার্নের 'ওয়ান হট এনকোডার'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    ট্রেনিং এবং টেস্ট স্প্লিট করে নেই এখানে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    কর্পাসের প্রতিটা শব্দকে টোকেন বানানোর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    নিউরাল নেটওয়ার্কে পাঠাতে দরকার 'প্যাডিং'
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    'আউট অফ ভোকাবুলারি' শব্দগুলোকে ইনডেক্স ১ এ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    ট্রেনিং ডাটাকে ফিট করবো আলাদাভাবে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    পুরো ওয়ার্ড ইনডেক্স দেখা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    ভোকাবুলারি সাইজ ঠিক করে নিচ্ছি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    প্যাডিং, এখানে ম্যাক্সিমাম লেনথ ৫০০ শব্দ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    টেক্সট টু সিকোয়েন্স একটু দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    প্রথম ট্রেনিং সিকোয়েন্স প্রিন্ট করে দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    শব্দের এমবেডিং এর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    কম ডাইমেনশন দিয়ে শুরু করে দেখি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    ট্রেনিং ডাটা, প্যাডিং করা সহ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    এমবেডিং লেয়ারের কাজ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    দুটো লস নিয়ে কাজ করে দেখুন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    মডেলটা দেখুন, সাধারণ সিকোয়েন্সিয়াল লেয়ার
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    দুটো 'লস' পদ্ধতি দিয়ে চেষ্টা করা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    মডেল সামারি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    ট্রেনিংয়ের সময় নিদেনপক্ষে ৬ ঘন্টা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    মডেলকে সেভ করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    অ্যাক্যুরেসি এবং লসকে প্লট করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    টেন্সরবোর্ড দিয়ে প্লটিং
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    দুটা উদাহরণ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    ওয়ার্ড এমবেডিংগুলোকে ডিস্কে সেভ করি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    ভোকাবুলারি সাইজ এবং এমবেডিং ডাইমেনশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    শব্দকে ‘ভিজুয়ালাইজেশন’ - অনেক ডাইমেনশনে
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    শব্দের এমবেডিংগুলোকে ‘ভিজুয়ালাইজেশন’
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    এমবেডিং প্রজেক্টরের জন্য ফাইল তৈরি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_48" class="md-nav__link">
+    এমবেডিং প্রজেক্টর
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_49" class="md-nav__link">
+    ডাউনলোড করে নেই ফাইল দুটো
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_50" class="md-nav__link">
+    কেরাস মডেলকে আবার লোড করে দেখি
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক</h1>
+                
+                <p><a href="https://colab.research.google.com/github/raqueeb/nlp_bangla/blob/master/Chap_6_bangla_classification_final.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h3 id="_1">বাংলা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট</h3>
+<p>আপনারা কি একটা জিনিস লক্ষ্য করেছেন - আমরা যখন ইন্টারনেটে প্রচুর ওয়েবসাইটের ডাটাবেজে এক্সেস করি, সেগুলোর বেশিরভাগই এখন মাইক্রো সার্ভিসে চলে এসেছে। এটা ঠিক যে - পৃথিবীতে যেখানে বেশিরভাগ ডেটা ওয়েবের মাধ্যমে অ্যাক্সেস করা হয়, তার বেশিরভাগ ডাটা প্রায়শই আমরা JSON ফর্ম্যাটে দেখতে পাচ্ছি। বিভিন্ন ওয়েব সার্ভিসের ‘এপিআই’ থেকে ডাটা টানার সময় আমাদের এই ধরনের ফরম্যাটের ডাটা প্রয়োজন হতে পারে, যার স্ট্রাকচার খুবই সহজ এবং কোন ধরনের আলাদা পার্সার ব্যবহার ছাড়াই এটাকে পড়া সম্ভব। </p>
+<p>আমরা যখন ‘এক্সএমএল’ ডাটা নিয়ে কাজ করতাম, সেটা ওরকম ‘হিউম্যান রিডেবল’ নয় এবং এর জন্য আলাদা করে ‘পার্সার’ মানে সফটওয়্যার লাগতো যা আমাদের জন্য বেশ সমস্যাজনক বটে। JSON এর অর্থ ‘জাভাস্ক্রিপ্ট অবজেক্ট নোটেশন’। ‘জেসন’ হ'ল খুবই ‘লাইটওয়েট’ ডাটা ফর্ম্যাট যা বিভিন্ন ভাষা অর্থাৎ ল্যাঙ্গুয়েজের মধ্যে ডাটা ইন্টারচেঞ্জের জন্য ব্যবহৃত হয়। এটা মানুষের পক্ষে পড়া সহজ এবং যেকোন মেশিন দ্বারা সহজেই ‘পার্স’ করা যায়।</p>
+<h3 id="_2">ইন্ডাস্ট্রি স্ট্যান্ডার্ড এপিআই</h3>
+<p>এর আগের যতগুলো বই লিখেছি সেই বইগুলোতে আমি ডাটাসেট হিসেবে সাধারণত “কমা সেপারেটেড ভ্যালু” অথবা ‘সিএসভি’ ফরম্যাট ব্যবহার করেছি। ‘সিএসভি’ ডাটাসেট হিসেবে বড় বড় মেশিন লার্নিং শেখানোর প্ল্যাটফর্ম যেমন ক্যাগলে এখনো ব্যবহার হয় তবে - ইন্ডাস্ট্রিতে কমপ্লেক্স ডাটা চলে আসায় তার জন্য নতুন কিছু ফরম্যাটের প্রয়োজন পড়েছে। সেই কারণে এই বইতে নতুন একটা ফরম্যাট নিয়ে কাজ করতে চাই যা আমার অভিজ্ঞতায় পুরো পৃথিবীর ডাটা ইন্ডাস্ট্রিগুলো ব্যবহার করছে। </p>
+<p>আমি নিজেও আমার অফিসের কাজে বহুদিন ধরে এই ফরম্যাট ব্যবহার করছি কারণ শুরুতেই এর ব্যবহারের সহজতা এবং ভিন্ন ভিন্ন সিস্টেমের মধ্যে ডাটা ‘ইন্টার এক্সচেঞ্জের’ জন্য এই ফরম্যাটকে সবাই ভালবাসে। সবচেয়ে বড় কথা হচ্ছে - আমরা মানুষেরা এটা সহজেই পড়তে পারি এবং এর মধ্যে যদি কোন কিছু ‘ব্রোকেন’ অর্থাৎ কাজ করছে না তাহলে সেটাকে ‘ডিবাগ’ করা অনেক সহজ।</p>
+<h2 id="_3">ডাটার সহজবোধ্যতা, ইন্টিগ্রিটি ঠিক রাখা</h2>
+<p>মনে রাখতে হবে, আমরা যে কাজ করছি সেখানে ডাটা হ্যান্ডলিংয়ের সময় ডাটার অখন্ডতা অর্থাৎ সেটার ‘ইন্টেগ্রিটি’ ধরে রাখতে চাই যাতে ডাটাগুলো এক সিস্টেম থেকে আরেক সিস্টেমে গেলে সেই ডাটাগুলো ‘পাঠযোগ্য’ থাকে। আমি চাইবো যে পুরো মেশিন লার্নিং এর পাইপলাইন ধরে একেকটা ট্রান্সফরমেশনের আগে এবং পরে ডাটাটা কি হচ্ছে সেটা বোঝানোর জন্য একটা সহজ ‘এপিআই’ ফরম্যাট বেছে নিয়েছি এখানে। </p>
+<p>জেসন এই লক্ষ্যগুলি অর্জনে খুব কার্যকর ভাবে কাজ করছে, এবং এনকোডিং এর জায়গায় জেসন অন্যান্য স্ট্যান্ডার্ড লাইব্রেরির সাথে দুর্দান্ত কার্যকারিতা দেখায়। আমরা পুরো বই জুড়ে এই স্ট্যান্ডার্ড লাইব্রেরির কার্যকারিতাটি ব্যবহার করব। </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># আমরা সবসময় চাইবো টেন্সরফ্লো ২.x ব্যবহার করতে</span>
+<span class="k">try</span><span class="p">:</span>
+  <span class="o">%</span><span class="n">tensorflow_version</span> <span class="mf">2.</span><span class="n">x</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+  <span class="k">pass</span>
+</code></pre></div>
+<h2 id="_4">ক্যাগলের মাল্টিক্লাস ক্লাসিফিকেশনের নিউজ ডাটাসেট</h2>
+<p>আগের ডিপ লার্নিং বইয়ে বাংলা সেন্টিমেন্ট এনালাইসিস দেখেছি - যেখানে টেন্সরফ্লো দিয়ে ছোট একটা ডাটাসেট থেকে তার প্রেডিকশনগুলো দেখিয়ে ছিলাম। আগের ডিপ লার্নিং বইয়ের ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং অংশে একটা নির্ধারিত বাক্যকে মডেলে পাঠালে সে বাক্যের ভেতরের ‘ধারণাগুলো’ বুঝে বাক্যটা ‘পজিটিভ’ না ‘নেগেটিভ’ এই ব্যাপারটা জানিয়ে দিত।</p>
+<p>আগের বইয়ে বিশেষ করে ‘হাতেকলমে পাইথন ডিপ লার্নিং’ বইটাতে কিছু বাংলা ডাটাসেট ব্যবহার করেছিলাম যেগুলোকে ‘হোস্ট’ করতে হয়েছিল গিটহাবে। গিটহাবে বড় বড় ফাইল, বিশেষ করে - যেগুলো প্রায় কয়েক গিগাবাইটের ওপরে - সেগুলোকে হোস্ট করার সমস্যা হচ্ছে; প্রথমত: ফাইলগুলোর সাইজ এবং পরবর্তীতে এই বড় বড় ফাইলগুলোকে ‘হোস্ট’ করতে হয় গিটহাব ‘এলএফএস’ অর্থাৎ লার্জ ফাইল সিস্টেম হিসেবে, যা অনেক সময় বিনামূল্যের একাউন্টে ব্যান্ডউইড্থ ট্রাফিকের লিমিটে পড়ে যায়।</p>
+<p>সেদিক থেকে বড় বড় ডাটাসেট ‘পোষ্ট’ করার জন্য ক্যাগল একটা ভালো প্ল্যাটফর্ম। এরমধ্যে ‘ব্যান্ডউইডথ’ এবং ডাটাসেটের সাইজের উপরে সেরকম সীমাবদ্ধতা নেই। সবচেয়ে বড় কথা হচ্ছে, ক্যাগল থেকে বড় বড় ডাটাসেট গুগল ‘কোলাবে’ ডাউনলোড করতে ‘ট্রানস্ফার স্পিড’ পাওয়া যায় প্রতি সেকেন্ডে ১০০ মেগাবাইট এরও বেশি। এটা একটা বিশাল প্রাপ্তি যখন ‘গুগল কোলাব’ আমরা ব্যবহার করি ১২ ঘন্টার জন্য - বিনামূল্যের 
+একাউন্টে।</p>
+<h2 id="_5">৯টা ক্যাটাগরির ক্লাসিফিকেশন</h2>
+<p>আমাদের বাংলা পত্রিকা ডাটাসেটে যেই ডাটাগুলোকে ব্যবহার করা হয়েছে, তার মধ্যে ৯টা ক্যাটাগরিতে সবগুলো কনটেন্ট ভাগ করে ফেলা হয়েছে। ওই ক্যাটাগরিগুলোকে সামনে লিস্ট আকারে দেখব নোটবুক থেকে। ক্যাটাগরিগুলো হচ্ছে 'bangladesh', 'economy', 'education', 'entertainment', 'international',  'life-style', 'opinion', 'sports', এবং 'technology'।</p>
+<h2 id="_6">দুটো অথেন্টিকেশন পদ্ধতি, গুগল কোলাব এবং ক্যাগল</h2>
+<p>বড় ফাইল নিয়ে ঝামেলা থেকে মুক্তি দিয়েছে 'ক্যাগল'। পুরো পৃথিবী 'ক্যাগলে' হোস্ট করে তাদের ডাটাসেট। সমস্যা একটাই, ‘কোলাব’ থেকে ডাটাসেট ডাউনলোড করতে হলে সেটাকে দুটো অথেন্টিকেশন পদ্ধতির মাধ্যমে যেতে হয় যা স্ক্রিপ্ট হিসেবে লিখে রাখলে প্রতিবারই ব্যবহার করা যাবে। বিশেষ করে, গুগল কোলাবের (জুপিটার) পাইথন নোটবুক চালানোর সময়। শুরুতে, এই দুটোকে কানেক্ট করে দিতে হবে গুগল কোলাবের সাথে ক্যাগলের একাউন্ট - একটা ‘এপিআই টোকেন’ দিয়ে। এটা ডাউনলোড করার জন্য আমাদেরকে যেতে হবে ক্যাগলের গুগলের অ্যাকাউন্ট পেজে, যেখানে আমরা স্ক্রল-ডাউন করে নেমে যাব ‘এপিআই সেকশনে’। ছবি দেখুন।</p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/api.png" /></p>
+<p>ছবি: এপিআই সেকশন, ডাউনলোড হয়ে যাবে kaggle.json ফাইল</p>
+<p>আমাদের যদি আগে থেকে কোন ‘এপিআই টোকেন’ জেনারেট করা থাকে, সেটাকে বাদ দিতে পারি ‘এক্সপায়ার এপিআই টোকেন’ বাটনে ক্লিক করে। আর সেটা না হলে, আমরা সরাসরি একটা টোকেন জেনারেট করতে পারি ‘ক্রিয়েট নিউ এপিআই টোকেন’ বাটনে ক্লিক করে। বাটনটা ক্লিক করলেই kaggle.json ফাইলটা ডাউনলোড হয়ে যাবে এবং তার উপরে এই ফাইলটা কোথায় রাখতে হবে তার ডাইরেক্টরিটার ব্যাপারে বলে দিচ্ছে ক্যাগল। তৈরি করে নিতে হবে kaggle ফোল্ডার, যেখানে কপি করে নেব kaggle.json ফাইলটাকে।</p>
+<h2 id="_7">আপলোড করে নেই অথেন্টিকেশন টোকেন</h2>
+<p>নতুন একটা নোটবুক তৈরি না করে এই নোটবুকটাকে গিটহাব থেকে ‘ফর্ক’ করে চালালে এই মুহূর্তে ডাউনলোড করা kaggle.json ফাইলটাকে আপলোড করে নিতে হবে গুগল কোলাবে। আমাদের এই ফাইলটা একটা ‘অথেন্টিকেশন মেকানিজম’ - যার মাধ্যমে গুগল কোলাব একটা ডাটাসেটের ফাইলগুলোকে ডাউনলোড করতে গেলে এই ফাইলের মাধ্যমে সে বুঝে নেয় ফাইলের ডাউনলোড রিকোয়েস্টটা আসলে কোথা থেকে আসছে। এটা একটা ‘সিকিউরিটি’ এবং ‘অ্যাকাউন্টেবিলিটি’ চেক গুগলের জন্য। আপনারা ফাইলটাকে টেক্সট এডিটর দিয়ে খুলে দেখতে পারেন। গুগল কোলাবে ফাইল আপলোড করার জন্য নিচের কমান্ডটা ইমপোর্ট করলে সে ফাইল আপলোড করার একটা অপশন দেখিয়ে দেবে।</p>
+<h2 id="_8">ফাইল আপলোড</h2>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/upload.png" /></p>
+<p>ছবি: গুগল কোলাবের আপলোড প্রম্পট, আপলোড করে দিন kaggle.json ফাইল</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>
+<span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+</code></pre></div>
+<p><input type="file" id="files-bba53333-5b8c-46c8-b747-42f2390f758e" name="files[]" multiple disabled
+   style="border:none" /></p>
+<output id="result-bba53333-5b8c-46c8-b747-42f2390f758e">
+ Upload widget is only available when the cell has been executed in the
+ current browser session. Please rerun this cell to enable.
+ </output>
+<script src="/nbextensions/google.colab/files.js"></script>
+
+<pre><code>Saving kaggle.json to kaggle.json
+
+{'kaggle.json': b'{"username":"raqueeb","key":"b3ad7579............88aa992b"}'}
+</code></pre>
+<h2 id="_9">কোলাবের ‘ভার্চুয়াল লিনাক্স’ মেশিনে চালান লিনাক্স কমান্ড</h2>
+<p>গুগল কোলাব যেহেতু একটা ‘ভিএম’ অর্থাৎ ‘ভার্চুয়াল লিনাক্স’ মেশিন - সে কারণে আশ্চর্যবোধক (!) চিহ্ন দিয়ে যেকোনো লিনাক্স কমান্ড চালানো যায় গুগল কোলাবে। এই মুহূর্তে আমরা পাইথন প্যাকেজ ম্যানেজার (পিপ) দিয়ে ইন্সটল করে নেব ক্যাগল মডিউলকে, যাতে ক্যাগল সংক্রান্ত সব ধরনের  কমান্ডগুলো চালাতে পারি আমরা। এখানে ক্যাগল লিস্ট দিয়ে সব ধরনের ডাটা সেটের একটা লিস্ট পাওয়া যাবে।</p>
+<p>ফাইলটা আপলোড করার পর সেটাকে ক্যাগলের ‘ইন্সট্রাকশন’ অনুযায়ী সেটাকে কপি করে রাখতে হবে ‘ক্যাগল’ ফোল্ডারে। এরপর সিস্টেম সিকিউরিটির জন্য আমরা এই ফাইলটাতে কিছু পারমিশন যোগ করে দেব।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">q</span> <span class="n">kaggle</span>
+<span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">~/.</span><span class="n">kaggle</span>
+<span class="err">!</span><span class="n">cp</span> <span class="n">kaggle</span><span class="o">.</span><span class="n">json</span> <span class="o">~/.</span><span class="n">kaggle</span><span class="o">/</span>
+<span class="err">!</span><span class="n">ls</span> <span class="o">~/.</span><span class="n">kaggle</span>
+<span class="c1"># পারমিশন দেখে নিন</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="mi">600</span> <span class="o">/</span><span class="n">root</span><span class="o">/.</span><span class="n">kaggle</span><span class="o">/</span><span class="n">kaggle</span><span class="o">.</span><span class="n">json</span>
+</code></pre></div>
+<pre><code>kaggle.json
+</code></pre>
+<h2 id="_10">জেসন ডাটাসেট, ক্যাগল থেকে</h2>
+<p>তবে এখানে একটা বাক্যের সেন্টিমেন্ট অ্যানালাইসিস জন্য 'পজিটিভ’ ‘নেগেটিভ’ - মাত্র দুটো ক্যাটাগরি যার কাজটা কিছুটা সহজ ছিল। তবে, এবার আমরা ডাটাসেট থেকে বাক্যটা কোন ধরনের গ্রুপে পড়ে সে রকম দশটা গ্রুপের মধ্যে একটা গ্রুপের মধ্যে তাকে ফেলতে হবে। এর জন্য প্রথম আলো পত্রিকার পুরনো খবরগুলোকে এক জায়গায় নিয়ে এসে একটা সুন্দর ডাটাসেট বানিয়েছেন জাবির নাবিল। বিশেষ করে জেসন ফরম্যাটে। উনার গিটলিংক হচ্ছে “https://github.com/zabir-nabil/bangla-news-rnn”।</p>
+<p>আমরা যেহেতু একটা নির্দিষ্ট ডাটাসেট  অর্থাৎ বাংলায় পত্রিকার ডাটাসেট ডাউনলোড করব তার জন্য নিচের কমান্ডটি কাজ করবে। এভাবে আপনি যেকোন ডাটাসেট ডাউনলোড করতে পারবেন। </p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">kaggle</span> <span class="n">datasets</span> <span class="n">download</span> <span class="o">-</span><span class="n">d</span> <span class="n">furcifer</span><span class="o">/</span><span class="n">bangla</span><span class="o">-</span><span class="n">newspaper</span><span class="o">-</span><span class="n">dataset</span>
+</code></pre></div>
+<pre><code>Downloading bangla-newspaper-dataset.zip to /content
+ 89% 937M/1.03G [00:12&lt;00:01, 92.1MB/s]
+</code></pre>
+<h2 id="_11">গুগল কোলাবের বামে আছে 'ফাইলস' বাটন</h2>
+<p>গুগল কোলাবের বামে ফাইল এক্সপ্লোরের ক্লাউড ভার্চুয়াল মেশিনে কি কি ফাইল ডাউনলোড হয়েছে তা দেখা যাবে। ডাটাসেটের ডাউনলোড করা আর্কাইভ ফাইলটাকে আমরা আনজিপ অর্থাৎ ‘এক্সট্রাক্ট’ করে নেই।  এর ভেতরে আমরা দুটো ফোল্ডার পেলেও আমাদের কাজের জন্য ‘ডাটা ভার্সন টু’ জেসন ফাইলটা ব্যবহার করব। এখানে ছবি দেখুন। </p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/fileex.png" /></p>
+<p>ছবি: গুগল কোলাবের ফাইলস, 'ভিউ' থেকে 'টেবিল অফ কনটেন্ট' চাপ দিয়ে দেখুন</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">unzip</span> <span class="n">bangla</span><span class="o">-</span><span class="n">newspaper</span><span class="o">-</span><span class="n">dataset</span><span class="o">.</span><span class="n">zip</span>
+</code></pre></div>
+<pre><code>Archive:  bangla-newspaper-dataset.zip
+  inflating: data/data.json          
+  inflating: data_v2/data_v2.json
+</code></pre>
+<h2 id="_12">জেসন ফরম্যাট থেকে পাইথন লিস্টে</h2>
+<p>আমাদের ডাটাসেট যেহেতু স্টোর করা আছে জেসন ফরম্যাটে, কাজের সুবিধার্থে আমরা এটাকে কনভার্ট করে নিয়ে আসব পাইথনে। আমরা যেহেতু আমাদের মডেলকে প্রথমে ট্রেনিং করাবো, আর সে কারণে আমরা সবগুলো জেসন ফরম্যাটেড ডাটাকে পাইথনে নিয়ে আসব ‘লিস্ট’ হিসাবে। এখানে প্রতিটা জেসন এলিমেন্ট চলে আসবে পাইথন ‘লিস্ট’ এলিমেন্ট হিসেবে - যার ভেতরের তথ্যগুলোকে আমরা এখানে দেখছি স্কয়ার ব্র্যাকেট [] দিয়ে। এই কনভারশনটা কিভাবে করব? পাইথনের ভিতর বিল্ট-ইন জেসন প্যাকেজ অর্থাৎ টুলকিট আছে এই কাজটা করার জন্য। সেটাকে ইমপোর্ট করে নিয়ে আসি শুরুতে। জেসন লাইব্রেরি হিসেবে। এরপর আমাদের বাংলা পত্রিকার ডাটাসেট লোড করবো সেই জেসন লাইব্রেরি দিয়ে। তবে শুরুতে একটু জেসনের কাজ দেখি।</p>
+<h2 id="_13">শুরুতেই একটা উদাহরণ, জেসন দিয়ে</h2>
+<p>আমরা মেমোরিতে একটা পাইথনের অবজেক্ট তৈরি করি। ফ্লিটউড ম্যাকের একটা প্রিয় গান।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;music&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Fleetwood Mac&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Song&quot;</span><span class="p">:</span> <span class="s2">&quot;Isn&#39;t It Midnight&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>পাইথনের কনটেক্সট ম্যানেজার দিয়ে আমাদের একটা ফাইলে সেভ করতে হবে - যা ওপেন হবে 'রাইট' মোডে। ফাইলটার নাম দিচ্ছি data_file.json। </p>
+<p>এখানে dump() দুটো পজিশনাল আর্গুমেন্ট নিচ্ছে (১) ডাটা অবজেক্টটাকে সিরিয়ালাইজড করে (২) ফাইলের মতো অবজেক্টটাকে 'রাইট' করে রাখবে ডিস্কে।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># পাইথন ডিকশনারিটার মতো জিনিসটাকে সেভ করতে চাই -</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data_file.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">write_file</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">write_file</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># আবার খুলি</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data_file.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">read_file</span><span class="p">:</span>
+    <span class="n">data1</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">read_file</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># ভেতরে দেখি</span>
+<span class="n">data1</span>
+</code></pre></div>
+<pre><code>{'music': {'Song': "Isn't It Midnight", 'name': 'Fleetwood Mac'}}
+</code></pre>
+<h2 id="_14">আলাদা করে দুটো লিস্ট, ফিচার এবং লেবেল (বাংলা নিউজ ডাটাসেট)</h2>
+<p>ফিরে আসি আমাদের নিউজপেপার ডাটাসেটে। শুরুতে লুপের কাজ। এখানে আমরা লেবেলগুলোর লিস্ট তৈরি করবো যার মধ্যে ‘সেন্টেন্স’ এবং ‘লেবেলস’ থাকছে ট্রেনিং করানোর জন্য। ঠিক ধরেছেন দুটো লিস্ট। </p>
+<p>পাইথনে জেসন ফাইলটা খুলে ‘সেন্টেন্স’ এবং ‘লেবেলস’ দুটোকে আলাদা আলাদা লিস্টে রাখার জন্য আমরা একটা লুপ চালাবো। তবে, তার আগে ‘ডাটাস্টোর’ বলে অবজেক্টে সবকিছু রাখার জন্য আগে ডিক্লেয়ার করে নেব। শুরুতে সব জমা হচ্ছে datastore অবজেক্টে।</p>
+<p>এখানে আমরা পুরো ডাটাসেটকে ‘ইটারেট’ মানে লুপে ফেলে জেসনের মধ্যে ফেলে দেবো, সেটা আমাদের দরকারি দুটো ভ্যালু পাইথন লিস্ট এর মধ্যে যোগ করে দিবে। ট্রেনিং এর অর্থ হচ্ছে আমাদের ফিচার অর্থাৎ ডাটার রেকর্ড এর সাথে লেভেল এর একটা সম্পর্ক বুঝতে পারা,  সেই কাজটা করার জন্য ‘সেন্টেন্স’ এবং ‘লেবেলস’ এর মধ্যে সম্পর্কটা বোঝার জন্য দুটো ডাটাকে আলাদা আলাদা করে দুটো লিস্টে রেখে দিচ্ছি আমরা। 
+<div class="highlight"><pre><span></span><code>sentences.append(item[&#39;content&#39;])
+labels.append(item[&#39;category&#39;])
+</code></pre></div>
+এখানে জেসন থেকে আইটেম content এবং category থেকে datastore এ লুপ থেকে যোগ করছে।</p>
+<p>আমাদের টেক্সট এর জন্য যত ধরনের ‘প্রি-প্রসেসিং’ দরকার সেগুলো করার জন্য নিচের কোডগুলো দেখতে পারেন। </p>
+<p>ইউনিকোড এনকোডিং এর জন্য utf-8।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_v2/data_v2.json&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">datastore</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">datastore</span><span class="p">:</span>
+    <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])</span>
+</code></pre></div>
+<p>ডাটাস্টোর এর প্রথম লিস্টটা আমরা দেখতে পারি। আমাদের কতগুলো বাক্য যোগ হয়েছে সেটার একটা লেন্থ এখানে দেখা যেতে পারে। এর পাশাপাশি কতগুলো ‘লেবেলস’ আছে সেটা দেখলে বোঝা যাবে মোট ৯টা ক্যাটাগরিতে আমাদের এই ডাটাগুলো ভাগ করা আছে। </p>
+<div class="highlight"><pre><span></span><code><span class="n">datastore</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<pre><code>{'author': 'গাজীপুর প্রতিনিধি',
+ 'category': 'bangladesh',
+ 'category_bn': 'বাংলাদেশ',
+ 'comment_count': 0,
+ 'content': 'গাজীপুরের কালিয়াকৈর উপজেলার তেলিরচালা এলাকায় আজ বৃহস্পতিবার রাতের টিফিন খেয়ে একটি পোশাক কারখানার ৫০০ শ্রমিক অসুস্থ হয়ে পড়েছেন। এ ঘটনায় বিক্ষোভ করেছেন ওই কারখানার শ্রমিকেরা।সফিপুর মডার্ন হাসপাতালের জরুরি বিভাগের চিকিত্সক আল আমিন প্রথম আলো ডটকমকে বলেন, খাদ্যে বিষক্রিয়ায় তাঁরা (শ্রমিকেরা) অসুস্থ হয়ে পড়েছেন। এতে আতঙ্কিত হওয়ার কিছু নেই। অসুস্থদের চিকিত্সা দেওয়া হয়েছে।কারখানার শ্রমিক ও পুলিশ সূত্রে জানা যায়, উপজেলার তেলিরচালা এলাকার সেজাদ সোয়েটার লিমিটেড কারখানার শ্রমিকদের আজ রাত সাড়ে সাতটার দিকে টিফিন দেওয়া হয়। টিফিনে ছিল ডিম, রুটি, পেটিস ও কলা। টিফিন খেয়ে শ্রমিকেরা যথারীতি কাজে যোগ দেন। ওই টিফিন খাওয়ার প্রায় এক ঘণ্টা পর রাত সাড়ে আটটার দিকে কয়েকজন শ্রমিকের বমি ও পেট ব্যথা শুরু হয়। এরপর ধীরে ধীরে পুরো কারখানার শ্রমিকেরা অসুস্থ হতে থাকে। অনেকেই কারখানার মেঝেতে ঢলে পড়ে। এতে পাঁচ শতাধিক শ্রমিক অসুস্থ হয়ে পড়ে।পরে কারখানা কর্তৃপক্ষ দ্রুত যানবাহনের ব্যবস্থা করে তাদের সফিপুর জেনারেল হাসপাতাল, সফিপুর মডার্ন হাসপাতাল, উপজেলা স্বাস্থ্য কমপ্লেক্সসহ বিভিন্ন ক্লিনিকে ভর্তি করে। বাসি পচা খাবার দেওয়ায় শ্রমিকরা ক্ষুব্ধ হয়ে কারখানার সামনে বিক্ষোভ করে। খবর পেয়ে পুলিশ গিয়ে শ্রমিকদের বুঝিয়ে ও খাবার সরবরাহ প্রতিষ্ঠানের বিরুদ্ধে ব্যবস্থা নেওয়ার আশ্বাস দিলে শ্রমিকেরা শান্ত হয়।সফিপুর জেনারেল হাসপাতালে ভর্তি শ্রমিক জাকির হোসেন ও আসমা আক্তার বলেন, টিফিন খাওয়ার সময় ডিম ও কেক থেকে দুর্গন্ধ বের হচ্ছিল। এ কারণে অনেকেই ওই খাবার খায়নি। তবে বেশির ভাগ শ্রমিকই ওই খাবার খেয়েছে।কারখানার সহকারী উত্পাদন কর্মকর্তা (এপিএম) বছির উদ্দিন বলেন, টিফিনগুলি যে ঠিকাদারি প্রতিষ্ঠান কারখানায় সরবরাহ করে তাদের বিরুদ্ধে ব্যবস্থা নেওয়া হবে।মৌচাক পুলিশ ফাঁড়ির উপ-পরিদর্শক (এসআই) সৈয়দ আজহারুল ইসলাম প্রথম আলো ডটকমকে বলেন, শ্রমিকদের বুঝিয়ে শান্ত করা হয়েছে। এ ছাড়া কারখানা কর্তৃপক্ষকে খাদ্য সরবরাহ প্রতিষ্ঠানের বিরুদ্ধে ব্যবস্থা নিতে বলা হয়েছে।',
+ 'modification_date': '০৪ জুলাই ২০১৩, ২৩:২৭',
+ 'published_date': '০৪ জুলাই ২০১৩, ২৩:২৬',
+ 'tag': ['গাজীপুর'],
+ 'title': 'কালিয়াকৈরে টিফিন খেয়ে ৫০০ শ্রমিক অসুস্থ, বিক্ষোভ',
+ 'url': 'http://www.prothom-alo.com/bangladesh/article/19030'}
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>408471
+</code></pre>
+<p>এখানে লেবেল হচ্ছে ৯টা। তবে মেশিন লার্নিং কী অক্ষর অর্থাৎ 'স্ট্রিং' বুঝবে? না বুঝবে না, সেকারণে এই লেবেলগুলোকে পাল্টে নেব সংখ্যায়। এখানে set কে ব্যবহার করছি এটার ইউনিক এলিমেন্টগুলোকে একটা একটা করে দেখতে। </p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>{'bangladesh',
+ 'economy',
+ 'education',
+ 'entertainment',
+ 'international',
+ 'life-style',
+ 'opinion',
+ 'sports',
+ 'technology'}
+</code></pre>
+<h2 id="_15">লেবেলগুলোকে সংখ্যায় নিয়ে আসি</h2>
+<p>আমাদের এখানে যেহেতু লেবেলগুলো শব্দে আছে সে কারণে এটাকে সংখ্যায় কনভার্ট করে নেব কিছু টুলস অর্থাৎ সাইকিট-লার্নের কিছু প্রসেসিং টুল মাধ্যমে। আমরা এখানে সরাসরি পাইথন  অথবা টেন্সরফ্লো থেকে কিছু প্রসেসিং টুল ব্যবহার করতে পারতাম, তবে আমার কাছে মনে হয়েছে মেশিন লার্নিং এর প্রচুর টুল তৈরি করা আছে সাইকিট-লার্ন লাইব্রেরীতে। চেষ্টা করবো সেগুলোকে এখানে দেখাতে। এ মুহুর্তে আমরা sklearn.preprocessing.LabelEncoder ব্যবহার করবো যার কাজ হচ্ছে আমাদের লেবেলগুলোকে সংখ্যায় কনভার্ট করা যা শুরু হবে ০ দিয়ে এবং শেষ হবে আমাদের মোট লেবেলের সংখ্যা থেকে ১ বিয়োগ করে। অর্থাৎ ০ এর জন্য এখানে ১ বিয়োগ করছি। </p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="n">testlabel</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">testlabel</span><span class="o">.</span><span class="n">fit</span><span class="p">([</span><span class="s2">&quot;ঢাকা&quot;</span><span class="p">,</span> <span class="s2">&quot;ঢাকা&quot;</span><span class="p">,</span> <span class="s2">&quot;দিনাজপুর&quot;</span><span class="p">,</span> <span class="s2">&quot;রংপুর&quot;</span><span class="p">])</span>
+</code></pre></div>
+<pre><code>LabelEncoder()
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nb">list</span><span class="p">(</span><span class="n">testlabel</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>['ঢাকা', 'দিনাজপুর', 'রংপুর']
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">testlabel</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="s2">&quot;ঢাকা&quot;</span><span class="p">,</span> <span class="s2">&quot;ঢাকা&quot;</span><span class="p">,</span> <span class="s2">&quot;দিনাজপুর&quot;</span><span class="p">,</span> <span class="s2">&quot;রংপুর&quot;</span><span class="p">])</span>
+</code></pre></div>
+<pre><code>array([0, 0, 1, 2])
+</code></pre>
+<p>উদাহরণ শেষ, আমাদের বাংলা নিউজ ডাটাসেটে ফিরে আসি। বাংলা নিউজ ডাটাসেটে labels হিসেবে আমাদের ৯টা ক্যাটেগরি ছিলো।</p>
+<div class="highlight"><pre><span></span><code><span class="n">label</span> <span class="o">=</span> <span class="n">testlabel</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>{0, 1, 2, 3, 4, 5, 6, 7, 8}
+</code></pre>
+<p>এটা এক ডাইমেনশনের অ্যারে। এখানে ভেক্টর দরকার আছে কী? বিশেষ করে ওয়ার্ড এমবেডিং এ লাগবে। হাতেকলমে পাইথন ডিপ লার্নিং বইটা দেখুন এই এমবেডিং এর ব্যাপারে।</p>
+<h2 id="_16">‘মাল্টিক্লাস’ ক্লাসিফিকেশন এবং ‘লস’ ফাংশন</h2>
+<p>(এটা মিস করা ঠিক হবে না)</p>
+<p>এধরনের যেকোনো ‘মাল্টিক্লাস’ অর্থাৎ (লেবেল ০-৮) ক্লাসিফিকেশন এর জন্য আমরা দুটো ধরনের ‘লস’ ফাংশন ব্যবহার করতে পারি। এবং এই দুটো ‘লস’ ফাংশন নেটওয়ার্কের প্রেডিকশন এর সাথে আসল লেবেলের সাথে মিলিয়ে দেখবে তার ফলাফল। এখানে আমরা (১) “ক্যাটাগরিক্যাল ক্রস এনট্রপি” অথবা (২) “স্পার্স ক্যাটাগরিক্যাল এনট্রপি” লস - যাই ব্যবহার করি না কেন, সেটার জন্য এই মুহূর্তে একটা সিদ্ধান্ত নিতে হবে। নিচে দেখুন আমাদের “ওয়ান হট এনকোডিং” ব্যবহার করতে হবে - যদি আমরা (১) “ক্যাটাগরিক্যাল ক্রস এনট্রপি” ব্যবহার করি।</p>
+<h2 id="_17">“ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস</h2>
+<p>ধরা যাক, আমরা ‘এন’ সংখ্যক ক্লাসকে ধরে একটা ক্লাসিফিকেশন সমস্যা সমাধান করব - যার ক্লাসিফিকেশন অর্থাৎ ‘ফিচার এক্সট্রাকশন’ এর জন্য শুরুতে নিউরাল নেটওয়ার্ক ব্যবহার করলেও শেষের লেয়ারে ‘সফটম্যাক্স’ অ্যাক্টিভেশন ফাংশন ব্যবহার করব। সেখানে আমরা যদি “ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস ব্যবহার করি তাহলে আমাদের ‘এন’ ডাইমেনশন ভেক্টরে সবগুলো সংখ্যা (০) শূন্য হবে - শুধুমাত্র, করেসপন্ডিং ক্লাসের জায়গায় সেটা  (১) ‘এক’ হয়ে যাবে। এটাকে ‘ওয়ান হট এনকোডিং’ বলছি। এটা ব্যবহার করলে আমাকে এখন নিচের OneHotEncoder ফাংশনটা ব্যবহার করতে হবে।</p>
+<p>যেমন: ৯টা (০-৮) ক্লাসের জন্য আমাদের ইনপুট যদি ক্লাস টু হয় তাহলে সেই ইনপুট এর জন্য লেভেল হতে পারে এরকম;
+০ ০ ১ ০ ০ ০ ০ ০ ০</p>
+<p>“ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস যেকোনো ক্লাসিফিকেশন সমস্যার জন্য ব্যবহার করা যায়।</p>
+<h2 id="_18">‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ লস</h2>
+<p>এর পাশাপাশি আমরা যদি ‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ ব্যবহার করি তাহলে সেখানে ‘এন’ ডাইমেনশনের ভেক্টর ব্যবহার না করে সরাসরি সংখ্যাটা বসিয়ে দিতে পারি। এখানে যেই ‘ইন্টেজার’ অর্থাৎ সংখ্যাটা ব্যবহার করা হবে সেটাই সেই ক্লাসের ডাটা হিসেবে ‘রিপ্রেজেন্ট’ করবে। সোজা ভাষায় বললে ‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ লসে সরাসরি সেই ক্লাসের জন্য যে সংখ্যাটা নির্ধারিত সেই সংখ্যাকে ব্যবহার করবে। এতে, কাজ কমে আসে।</p>
+<p>এখানে ‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ এর জন্য হবে সরাসরি সংখ্যা ২। </p>
+<h2 id="_19">কখন ব্যবহার করা যাবে?</h2>
+<p>“স্পার্স ক্যাটাগরিক্যাল এনট্রপি” লস তখনই ব্যবহার করা যাবে যখন প্রতিটা ইনপুট শুধুমাত্র একটা ক্লাসের জন্য প্রযোজ্য হবে। অর্থাৎ, কোন ইনপুট একসঙ্গে ২/৩ ক্লাসের জন্য ‘রিপ্রেজেন্ট’ করবে না। ফলে, এটা যদি আমরা ‘ওয়ান হট এনকোডিং’ ব্যবহার করি - তাহলে শুধুমাত্র সেই একটা এলিমেন্টে সংখ্যা (১) ‘এক’ বসবে আর বাকিগুলো সংখ্যা (০) শূন্য হবে যা আমাদের কম্পিউটেশনাল কাজের জন্য অনর্থক বটে। আমাদের কম্পিউটার রিসোর্স এর অপব্যবহার হবে - যখন বিশাল ডাইমেনশনে শুধুমাত্র সংখ্যা (০) শূন্য দিয়ে ভরে রেখেছি। যেখানে এই ভ্যালু দিয়ে আমাদের ‘রিপ্রেজেন্ট’ করার প্রয়োজন নেই। আর সে কারণে আমরা সেখানে সরাসরি একটা ‘ইন্টেজার’ ভ্যালু অর্থাৎ সংখ্যা ব্যবহার করছি।</p>
+<p>আচ্ছা তাহলে কী কথা রইল? আমরা এমুহুর্তে “ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস ব্যবহার করলে নিচের “ওয়ান হট এনকোডিং” ব্যবহার করতে হবে। </p>
+<p>আর যদি না ব্যবহার করি? তাহলে কমেন্ট করে দিচ্ছি নিচের অংশটুকু, যাতে পরে ব্যবহার করতে পারেন। </p>
+<h2 id="_20">সাইকিট লার্নের 'ওয়ান হট এনকোডার'</h2>
+<p>এ মুহুর্তে ব্যবহার করছি না।</p>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">from sklearn.preprocessing import OneHotEncoder</span>
+
+<span class="sd">encoder = OneHotEncoder(sparse=False)</span>
+
+<span class="sd">class_labels = label.reshape((label.shape[0], 1))</span>
+<span class="sd">cl_labels = encoder.fit_transform(class_labels)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+<pre><code>'\nfrom sklearn.preprocessing import OneHotEncoder\n\nencoder = OneHotEncoder(sparse=False)\n\nclass_labels = label.reshape((label.shape[0], 1))\ncl_labels = encoder.fit_transform(class_labels)\n'
+</code></pre>
+<h2 id="_21">ট্রেনিং এবং টেস্ট স্প্লিট করে নেই এখানে</h2>
+<p>আমাদের 'সেন্টেনসেস' [len(sentences) = 408471] হচ্ছে প্রায় ৪ লক্ষ, ট্রেনিং সেট করে ফেলি ৩ লক্ষ ৫০ হাজারে। আপনারা পাল্টে নিন আপনাদের মতো করে। এর ফলে ট্রেনিং সেনটেন্সগুলো এই সিনট্যাক্স দিয়ে স্লাইস হয়ে যাবে training_size = 350000 দিয়ে। বাকিটা টেস্টিং ডাটাসেট হিসেবে থাকবে। </p>
+<div class="highlight"><pre><span></span><code><span class="n">training_size</span> <span class="o">=</span> <span class="mi">350000</span>
+
+<span class="n">training_sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">training_size</span><span class="p">]</span>
+<span class="n">testing_sentences</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span><span class="n">training_size</span><span class="p">:]</span>
+<span class="n">training_labels</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">training_size</span><span class="p">]</span>
+<span class="n">testing_labels</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="n">training_size</span><span class="p">:]</span>
+</code></pre></div>
+<p>বাকিগুলো থাকছে টেস্ট সেনটেন্স ডাটাসেট হয়ে। আমরা এখানে চাইবো ট্রেনিং এবং টেস্ট ডাটাসেট একে ওপরকে না দেখে। </p>
+<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">testing_sentences</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>58471
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
+</code></pre></div>
+<h2 id="_22">কর্পাসের প্রতিটা শব্দকে টোকেন বানানোর ধারণা</h2>
+<p>আমাদের টেক্সট এর জন্য tokenizer.fit ফাংশনকে কল করছি যাতে আমাদের কনটেন্টের কর্পাসের প্রতিটা শব্দকে টোকেন হিসেবে তৈরি করতে পারে। এরপর আমরা সেগুলোকে একটা ‘ওয়ার্ড ইনডেক্সে’ দেখতে পারি। এখানে আমাদের প্রতিটা বাক্যকে একটা টোকেনের সিকোয়েন্স হিসেবে তৈরি করে দেবো, যাতে সেই বাক্যগুলোর প্রতিটা শব্দের একটা টোকেনের সিকোয়েন্স হিসেবে পাশাপাশি দেখাতে পারে। </p>
+<h2 id="_23">নিউরাল নেটওয়ার্কে পাঠাতে দরকার 'প্যাডিং'</h2>
+<p>আর যেহেতু আমাকে এটাকে নিউরাল নেটওয়ার্কে পাঠাতে হবে, সে কারণে প্রতিটা বাক্যকে ‘প্যাড’ ব্যবহার অর্থাৎ ‘প্যাডিং’ করে সবগুলোকে সংখ্যায় একই লেন্থে আনার ব্যবস্থা করব। যন্ত্র তো বোঝে না আমি বাক্য কোথায় শেষ করবো। আচ্ছা বলুনতো - আমরা মেপে মেপে কথা বলি? আমি আপনাদেরকে অনুরোধ করবো প্রতিটা অবজেক্টকে ‘প্রিন্ট’ করে দেখতে - যাতে একেকটা ‘ট্রানসফর্মেশন’ শব্দগুলো কিভাবে সংখ্যায় এবং তাদের সেই দৈর্ঘ্যগুলো কিভাবে পাল্টাচ্ছে সেটা দেখার জন্য।  এজন্য আমাদের পাইথনের প্রিন্ট কমান্ডই যথেষ্ট।</p>
+<h2 id="_24">'আউট অফ ভোকাবুলারি' শব্দগুলোকে ইনডেক্স ১ এ</h2>
+<p>মনে আছে তো 'আউট অফ ভোকাবুলারি' শব্দগুলোর কথা? আমরা সেগুলোকে মিস করতে না।</p>
+<h2 id="_25">ট্রেনিং ডাটাকে ফিট করবো আলাদাভাবে</h2>
+<p>আমরা সবসময় চাইবো যাতে ট্রেনিং এবং টেস্ট ডাটা একে অপরকে না দেখে।  সেকারণে ট্রেনিং ডাটাকে আলাদা করে ফিট করবো ‘টোকেনাইজার’ দিয়ে। এরপরে টেস্ট ডাটাকে ফিট করবো ‘টোকেনাইজার’কে দিয়ে - আলাদাভাবে ‘ইনস্ট্যানশিয়েট’ করতে। পুরো কর্পাসে নয়। এটা আমরা করবো যাতে আমাদের মডেল পরীক্ষা দেয় একদম নতুন ডাটা দিয়ে। </p>
+<div class="highlight"><pre><span></span><code><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">oov_token</span><span class="o">=</span><span class="s2">&quot;&lt;OOV&gt;&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">training_sentences</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_26">পুরো ওয়ার্ড ইনডেক্স দেখা</h2>
+<p>আমরা এখানে পুরো ওয়ার্ড ইনডেক্স দেখতে চাইলে tokenizer.word_index লিখলেই হবে। তবে আমি এখানে পুরোটা প্রিন্ট করলে ফাইল সাইজ বেড়ে যাবে। আর তাই, ডিকশনারি থেকে প্রথম ১০/২০টা ওয়ার্ড ইনডেক্স। লিস্টের শুরুতেই 'আউট অফ ভোকাবুলারি' শব্দগুলোর জন্য ১। শুরুর দিকে সবচেয়ে বেশি ব্যবহারিত 'স্টপ' ওয়ার্ড যেগুলো ফেলে দেয়া যায়। এখানে কমপ্লেক্সিটি এড়ানোর জন্য ফেলছি না।</p>
+<div class="highlight"><pre><span></span><code><span class="nb">list</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">())[:</span><span class="mi">20</span><span class="p">]</span> 
+</code></pre></div>
+<pre><code>[('&lt;OOV&gt;', 1),
+ ('ও', 2),
+ ('এ', 3),
+ ('থেকে', 4),
+ ('করে', 5),
+ ('করা', 6),
+ ('বলেন', 7),
+ ('এই', 8),
+ ('জন্য', 9),
+ ('না', 10),
+ ('তিনি', 11),
+ ('সঙ্গে', 12),
+ ('তাঁর', 13),
+ ('এক', 14),
+ ('একটি', 15),
+ ('নিয়ে', 16),
+ ('এবং', 17),
+ ('করতে', 18),
+ ('হয়।', 19),
+ ('মধ্যে', 20)]
+</code></pre>
+<h2 id="_27">ভোকাবুলারি সাইজ ঠিক করে নিচ্ছি</h2>
+<p>ওয়ার্ড ইনডেক্স এর সাথে ইনডেক্স ০ এর জন্য ১ যোগ করে দিচ্ছি। পরের লাইনে সাইজ পেয়ে যাচ্ছি।</p>
+<div class="highlight"><pre><span></span><code><span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">vocab_size</span>
+</code></pre></div>
+<pre><code>2040686
+</code></pre>
+<h2 id="_28">প্যাডিং, এখানে ম্যাক্সিমাম লেনথ ৫০০ শব্দ</h2>
+<p>প্রতিটা বাক্য যতো ছোট অথবা বড় হোক, সেটাকে কেঁটে অথবা প্যাডিং দিয়ে বড় করে ৫০০ শব্দের ভেতরে রাখবে। সবকিছু একরকমের ধারনায় রাখার জন্য আমরা trunc_type এবং
+padding_type দুটোকেই 'পোস্ট' অর্থাৎ 'প্যাডিং' শেষের দিকে রাখছি।</p>
+<div class="highlight"><pre><span></span><code><span class="n">max_length</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">trunc_type</span><span class="o">=</span><span class="s1">&#39;post&#39;</span>
+<span class="n">padding_type</span><span class="o">=</span><span class="s1">&#39;post&#39;</span>
+
+<span class="n">training_sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">training_sentences</span><span class="p">)</span>
+<span class="n">training_padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">training_sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding_type</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+
+<span class="n">testing_sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">testing_sentences</span><span class="p">)</span>
+<span class="n">testing_padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">testing_sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding_type</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_29">টেক্সট টু সিকোয়েন্স একটু দেখি</h2>
+<p>একটু টেস্ট করে দেখি জিনিসটা কাজ করে কিনা? একটা জিনিস লক্ষ্য করেছেন - সবচেয়ে বেশি ব্যবহার হওয়া শব্দগুলোর সিরিয়াল আগের দিকে? কেন?</p>
+<div class="highlight"><pre><span></span><code><span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="s1">&#39;ভোকাবুলারি সাইজ ঠিক করে নিচ্ছি&#39;</span><span class="p">])</span>
+</code></pre></div>
+<pre><code>[[178189, 34714, 413, 5, 18478]]
+</code></pre>
+<h2 id="_30">প্রথম ট্রেনিং সিকোয়েন্স প্রিন্ট করে দেখি</h2>
+<p>শব্দগুলোকে মেশিন চেনে এইভাবে। সংখ্যায়। প্রথমটাই দেখি। বিশাল বড় এই একটাই।</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">training_sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+<pre><code>[2259, 15036, 78, 72533, 687, 61, 215, 2489, 18955, 8167, 15, 1074, 1368, 1046, 620, 1697, 294, 10719, 3, 966, 1270, 114, 21, 1368, 690932, 17037, 598, 1134, 201, 8588, 414, 1254, 27, 795, 5183, 7, 11270, 57451, 62, 2185, 1697, 294, 10719, 102, 7279, 909, 70, 150, 93383, 8308, 316, 186860, 620, 2, 52, 358, 131, 721, 78, 72533, 191, 302937, 39067, 2420, 1368, 1350, 61, 253, 680, 2990, 66, 18955, 316, 166, 81996, 54, 3394, 9610, 124015, 2, 81997, 18955, 8167, 2185, 9313, 468, 724, 240, 21, 18955, 10238, 692, 14, 662, 24, 253, 680, 1791, 66, 1919, 3591, 9453, 2, 8055, 3248, 49, 166, 225, 1768, 1768, 806, 1368, 2185, 1697, 96, 536, 1037, 1368, 7597, 9454, 2517, 102, 224, 1189, 620, 1697, 294, 175688, 1530, 760, 522, 3950, 227, 5, 94, 23802, 727, 995, 23802, 17037, 995, 87, 445, 40841, 55, 5429, 373, 116, 20612, 10856, 884, 6377, 113308, 2374, 294, 1368, 213, 1270, 116, 276, 1762, 52, 955, 1350, 12142, 2, 884, 1113, 706, 97, 227, 1613, 2430, 850, 2185, 3375, 690933, 727, 247, 373, 620, 2088, 126, 2, 10421, 942, 7, 18955, 10238, 271, 3394, 2, 6172, 4, 8872, 334, 3750, 3, 101, 1037, 21, 884, 265414, 38, 830, 594, 50081, 21, 884, 690934, 339, 12744, 68, 265415, 60461, 308, 7, 690935, 36, 4386, 501, 7044, 1113, 5, 94, 97, 227, 829, 458093, 52, 8643, 5954, 1440, 863, 3264, 10840, 83, 27, 795, 5183, 7, 1350, 12142, 3375, 6, 217, 3, 434, 1530, 3137, 1552, 1113, 706, 97, 227, 206, 121, 217]
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="c1"># টেন্সরফ্লো ২.x এর জন্য এই কনভার্সন</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">training_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">training_padded</span><span class="p">)</span>
+<span class="n">training_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">training_labels</span><span class="p">)</span>
+<span class="n">testing_padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">testing_padded</span><span class="p">)</span>
+<span class="n">testing_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">testing_labels</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_31">শব্দের এমবেডিং এর ধারণা</h2>
+<p>‘ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং’ এ এমবেডিং লেয়ার নিয়ে অনেক কথা বলেছি ‘হাতেকলমে পাইথন ডিপ লার্নিং’ বইটাতে। বিশেষ করে, এনএলপি, মেশিন লার্নিং এর একটা বড় অংশ হচ্ছে কিভাবে শব্দগুলোকে ঠিকমতো ‘রিপ্রেজেন্ট’ করা যায় - যাতে সেগুলোর মধ্যে কানেকশন অর্থাৎ সম্পর্কগুলোকে আন্দাজ করা যায়। ওয়ার্ড অর্থাৎ শব্দের এম্বেডিং আমাদের একটা বেশ দক্ষ ‘ডেন্স’ (নিউরালের ডেন্স) রিপ্রেজেন্টেশন তৈরি করে দেয়, যেখানে কাছাকাছি অর্থাৎ সম্পর্কিত শব্দগুলোর একই ধরনের এনকোডিং হয়। মেশিন লার্নিং বা ডিপ-লার্নিং এ আমরা যেহেতু নিজেদের হাতে এই শব্দগুলোকে এনকোডিং করিনা - সে কারণে এই শব্দের এমবেডিং লেয়ার একটা ‘ডেন্স’ ভেক্টরের একটা ‘লুকআপ টেবিল’ তৈরি করে দেয়, যার মধ্যে ফ্লোটিং পয়েন্ট ভ্যালুগুলোকে কাছাকাছি রাখে। </p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/emb2.png" /></p>
+<p>ছবি: বাংলা শব্দগুলোর এমবেডিং, সামনে আমরা নিজেরা করবো</p>
+<p>এখানে ফ্লোটিং পয়েন্ট ভ্যালুগুলো ভেক্টরগুলোর দৈর্ঘ্যগুলোকে কিছু প্যারামিটার এর মাধ্যমে ঠিক করে দেয় ট্রেনিং এর সময়ে। এই শব্দের এম্বেডিং এর ভ্যালুগুলোকে ম্যানুয়ালি নির্ধারণ না করে এগুলোকে ‘ট্রেনিং প্যারামিটার’ হিসেবে শুরুতে দেয়া হলেও মডেলের ট্রেনিং এর সময় ওয়েটগুলো আস্তে আস্তে শিখতে থাকে - তাদের আসল ভ্যালু কত হতে পারে। সাধারণ নিউরাল নেটওয়ার্ক এর ‘ডেন্স’ নেটওয়ার্ক এর মতো একটা মডেল যখন নিজেদের ওয়েটগুলোকে টিউন করে নেয় ট্রেনিং এর সাথে সাথে, সেভাবে এই শব্দের এম্বেডিংগুলো ভেক্টর স্পেসে ‘টিউন’ করে নিতে পারে। </p>
+<h2 id="_32">কম ডাইমেনশন দিয়ে শুরু করে দেখি</h2>
+<p>ছোট ডাটাসেটের ক্ষেত্রে - এ ধরনের শব্দের এম্বেডিং ৮ ডাইমেনশনাল দিয়ে শুরু হলেও দরকার পড়লে ১০২৪ ডাইমেনশনের কাজও আসতে পারে বড় ডাটাসেটে। বড় ডাইমেনশনের এমবেডিং - এ শব্দগুলোর মধ্যে আরও সূক্ষ্ম সম্পর্কগুলোকে ধরতে পারে - তবে এগুলো ট্রেইন করতে প্রচুর সময় চলে যায়।</p>
+<div class="highlight"><pre><span></span><code><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">8</span>
+</code></pre></div>
+<h2 id="_33">ট্রেনিং ডাটা, প্যাডিং করা সহ</h2>
+<p>এখানে যেহেতু আমাদের প্রতিটা বাক্য একই সমান নয়, তাই এই ব্যবস্থা। মানুষ কি মেপে মেপে কথা বলতে পারে? পারে না। সে কারণে আমরা যখন নিউরাল নেটওয়ার্কে বাক্যগুলোকে সিকোয়েন্স হিসাবে পাঠাবো - তখন এই জিনিসগুলোতে ‘প্যাডিং’ ব্যবহার করে সবগুলো বাক্য’র দৈর্ঘ্য এক সমান  রাখবো। </p>
+<div class="highlight"><pre><span></span><code><span class="n">training_padded</span>
+</code></pre></div>
+<pre><code>array([[  2259,  15036,     78, ...,      0,      0,      0],
+       [  1082, 216926,  21406, ...,      0,      0,      0],
+       [   764,   2002,    470, ...,      0,      0,      0],
+       ...,
+       [ 22488,  39163,  15195, ...,      0,      0,      0],
+       [  1692,    174,   9581, ...,      0,      0,      0],
+       [ 23523,  60309,    558, ...,      0,      0,      0]], dtype=int32)
+</code></pre>
+<h2 id="_34">এমবেডিং লেয়ারের কাজ</h2>
+<p>এই এমবেডিং লেয়ারের ডাইমেনশালিটি অর্থাৎ তার ‘প্রস্থ’ নিউরাল নেটওয়ার্ক এর নিউরন এর সাথে তুলনা করতে পারেন - যা আমরা দেখেছি ‘ডেন্স’ লেয়ার এর ক্ষেত্রে। </p>
+<p>যেকোনো নিউরাল নেটওয়ার্ক এর মতো এই এম্বেডিং লেয়ারে ওয়েটগুলো দৈবচয়নের ভিত্তিতে ‘ইনিশিয়ালাইজ’ করা হয়। পরবর্তীতে, ট্রেনিং এর সময় ‘লস’ ক্যালকুলেশন করে এর ফ্লোটিং পয়েন্ট ভ্যালুগুলো আস্তে আস্তে তার আসল মূল্যমানে ফেরত আসতে থাকে। এই পদ্ধতিকে আমরা ‘ব্যাক-প্রপাগেশন’ বলি। ট্রেনিং শেষে এম্বেডিংগুলো সম্পর্কিত শব্দগুলোর মত করে এর কাছাকাছি এনকোডিং এর জন্য পাশাপাশি চলে আসে। </p>
+<p>১০০০ শব্দের ভোকাবুলারিকে ৫ ডাইমেনশনে এমবেড করতে চাইলে এরকম বলতে পারি।</p>
+<p><code>embedding_layer = tf.keras.layers.Embedding(1000, 5)</code></p>
+<h2 id="_35">দুটো লস নিয়ে কাজ করে দেখুন</h2>
+<p>(আগে আলাপ করেছি)</p>
+<ol>
+<li>
+<p>“ক্যাটাগরিক্যাল ক্রস এনট্রপি” লস</p>
+</li>
+<li>
+<p>‘স্পার্স ক্যাটেগরিক্যাল ক্রস এনট্রপি’ লস</p>
+</li>
+</ol>
+<h2 id="_36">মডেলটা দেখুন, সাধারণ সিকোয়েন্সিয়াল লেয়ার</h2>
+<p>এখানে আমাদের ইনপুট ডাইমেনশনে ভোকাবুলারি সাইজ দিয়েছি। এখানে input_dim: ইন্টেজার, অর্থাৎ ভোকাবুলারির সাইজ = ওয়ার্ড ইনডেক্সের সাইজ + 1 এবং 
+output_dim: এটাও ইন্টেজার, আমাদের ডেন্স এমবেডিং এর ডাইমেনশন হবে।</p>
+<p>আমরা টেন্সরফ্লো &gt;= 2.x ব্যবহার করি, তাহলে LSTM ব্যবহার করলেই tf.keras.layers.CuDNNLSTM/CuDNNGRU এর ব্যবহারের দরকার পড়ছে না। শুধুমাত্র LSTM লেয়ার ব্যবহার করলেই সেটা জিপিইউ দিয়ে CuDNN ব্যবহার করে ফেলবে। আমাদেরকে আলাদাভাবে CuDNN বলে দিতে হবে না। </p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span>  <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+                              <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span> 
+                              <span class="n">output_dim</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span> 
+                              <span class="n">input_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">),</span>
+                              <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+                              <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">)),</span>
+                              <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)</span>
+<span class="p">])</span>
+</code></pre></div>
+<h2 id="_37">দুটো 'লস' পদ্ধতি দিয়ে চেষ্টা করা</h2>
+<p>আমরা যদি আগে 'ওয়ান হট এনকোডিং' ব্যবহার করতাম, তাহলে নিচেরটা চালিয়ে দেখুন। এখানে 'categorical_crossentropy' ব্যবহার করতাম যদি আগে 'ওয়ান হট এনকোডিং' দিকে অনেকগুলো ভেক্টর তৈরি করতাম। তবে কম্পিউটেশনাল প্রসেসিং কমাতে আমরা 'sparse_categorical_crossentropy' ব্যবহার করছি যাতে একই কাজ দ্রুত করা যায়।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># model.compile(loss=&#39;categorical_crossentropy&#39;,optimizer=&#39;adam&#39;,metrics=[&#39;accuracy&#39;])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;sparse_categorical_crossentropy&#39;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span><span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</code></pre></div>
+<h2 id="_38">মডেল সামারি</h2>
+<p>শুরুতেই এমবেডিং লেয়ার, এমবেডিং ডাইমেনশন ৮, ইনপুট লেনথ ৫০০, এর মধ্যে বাই ডাইরেকশনাল 'এলএসটিএম' যা নিয়ে কথা বলছি সামনে। সব শেষের লেয়ারে ডেন্স যা সফটম্যাক্স এক্টিভেশন দিয়ে ০-৮ অর্থাৎ ৯ টা ক্যাটাগরিতে মাল্টিক্লাস ক্লাসিফিকেশন করবে।</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding_2 (Embedding)      (None, 500, 8)            16325488  
+_________________________________________________________________
+bidirectional_2 (Bidirection (None, 500, 128)          37376     
+_________________________________________________________________
+bidirectional_3 (Bidirection (None, 64)                41216     
+_________________________________________________________________
+dense_1 (Dense)              (None, 9)                 585       
+=================================================================
+Total params: 16,404,665
+Trainable params: 16,404,665
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">tensorboard_callback</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="_39">ট্রেনিংয়ের সময় নিদেনপক্ষে ৬ ঘন্টা</h2>
+<p>গুগল কোলাবের বিনামূল্যের ‘জিপিইউ’ এবং ‘টিপিইউ’ ব্যবহার করে যতটুকু পাওয়া যায়। কারো বাসায় গেমিং পিসি থাকলে, সেখানে ‘জিপিইউ’ দিয়ে এই সময়টা কিছুটা কমিয়ে আনা যেতে পারে। অনেক ডাইমেনশন, তাই সময় লাগছে বেশি।</p>
+<div class="highlight"><pre><span></span><code><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">training_padded</span><span class="p">,</span> <span class="n">training_labels</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span> <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">testing_padded</span><span class="p">,</span> <span class="n">testing_labels</span><span class="p">),</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">tensorboard_callback</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>Epoch 1/5
+10938/10938 - 2736s - loss: 0.3938 - accuracy: 0.8786 - val_loss: 0.3180 - val_accuracy: 0.9010
+Epoch 2/5
+10938/10938 - 2727s - loss: 0.1370 - accuracy: 0.9568 - val_loss: 0.2675 - val_accuracy: 0.9168
+Epoch 3/5
+10938/10938 - 2701s - loss: 0.0719 - accuracy: 0.9769 - val_loss: 0.3062 - val_accuracy: 0.9134
+Epoch 4/5
+10938/10938 - 2695s - loss: 0.0378 - accuracy: 0.9880 - val_loss: 0.4016 - val_accuracy: 0.8996
+Epoch 5/5
+10938/10938 - 2685s - loss: 0.0209 - accuracy: 0.9935 - val_loss: 0.4004 - val_accuracy: 0.9051
+</code></pre>
+<h2 id="_40">মডেলকে সেভ করি</h2>
+<p>মডেলের ট্রেনিংয়ে সময় বেশি লাগে বলে এ ধরনের ট্রেনিং এর পরে মডেলগুলোকে ‘গুগল ড্রাইভে’ ‘সেভ’ করে রাখা ভালো। পুরো মডেলের ‘ওয়েট’ এবং ‘আর্কিটেকচার’ ধরে ‘সেভ’ করে রাখলে কাজে সুবিধা হয়। তবে. চেক-পয়েন্ট ধরে ‘ওয়েট’গুলোকে আলাদা আলাদা করে ‘সেভ’ করে রাখতে পারলে পরে আরো ভালো সুবিধা পাওয়া যায়।</p>
+<p>কেরাসের মডেল.সেভ দিয়ে এমুহুর্তে স্টোর করে রাখলাম। এর আগে গুগল ড্রাইভকে লোড করে নিতে হবে। এখানে একটা অথেনটিকেশন চাইবে, যা দিলে আপনার কাজ কমে যাবে।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/gdrive&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>Mounted at /content/gdrive
+</code></pre>
+<p>নতুন একটা ডিরেক্টরিতে পুরো মডেল 'সেভ' করতে চাচ্ছি। কেরাসের  HDF5 ফাইল হিসেবে সেভ করতে চাইলে নিচের কমান্ডটা দেখতে পারেন।</p>
+<p>এখানে '.h5' এক্সটেনশন মানে হচ্ছে পুরো মডেলটা সেভ হবে HDF5 ফাইল স্ট্যান্ডার্ডে।</p>
+<p><code>model.save('/content/gdrive/My Drive/Colab Notebooks/saved_model/my_model.h5')</code></p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="s1">&#39;/content/gdrive/My Drive/Colab Notebooks/saved_model/&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;/content/gdrive/My Drive/Colab Notebooks/saved_model/my_model&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>INFO:tensorflow:Assets written to: /content/gdrive/My Drive/Colab Notebooks/saved_model/my_model/assets
+</code></pre>
+<h2 id="_41">অ্যাক্যুরেসি এবং লসকে প্লট করি</h2>
+<p>আমাদের মডেলের ম্যাট্রিক্স হিসেবে 'অ্যাক্যুরেসি' এবং লসের হিসেব আগের হিস্টরির মধ্যে জমা থাকলেও সেটাকে ভিজ্যুয়ালাইজেশন না করলে মডেলের পারফরমেন্স বোঝা যাবে না। আমরা প্লট করছি ইপক দিয়ে "accuracy" এবং "loss" এর আঙ্গিকে। এখানে ট্রেনিং অ্যাক্যুরেসি বাড়লেও ভ্যালিডেশন অ্যাক্যুরেসি সেভাবে হয়নি। এখানে কী হচ্ছে তাহলে? ওভারফিটিং না আন্ডারফিটিং?</p>
+<p>যেহেতু প্রচুর সময় লাগছে একেকটা ট্রেনিংয়ে, বিশেষ করে ১টা ‘ইপক’ সম্পন্ন হতে - সে কারণে আমি এখানে সর্বনিম্ন হিসেবে পাঁচটা ‘ইপক’ দিয়েছি।  এত অল্প ‘ইপকে’ অনেক সময় ডাটার পুরো ধারণা পাওয়া যায় না - তবে, বেশ কয়েকজন প্রফেশনালদের সাথে কথা বলে যেটা বোঝা গেছে, বিভিন্ন ক্লাস অনুযায়ী ডাটার সংখ্যার মধ্যে তারতম্য থাকলে এ ধরনের গ্রাফ আসতে পারে।  দেখা গেছে, প্রতিটা ক্লাসে ডাটার সংখ্যা যদি একই ধরনের থাকে, তাহলে ‘ভ্যালিডেশন অ্যাকুরেসি’ এবং ট্রেনিংয়ের অ্যাকুরেসি পাশাপাশি চলে আসে।</p>
+<p>আমাদের টেন্সরবোর্ড দিয়ে দেখলে নিচের এই কোড লাগে না আর! সামনে দেখুন উদাহরনটা।</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## অ্যাক্যুরেসি এবং লস, ম্যাটপ্লটলিব দিয়ে</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">plot_graphs</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="n">string</span><span class="p">])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_&#39;</span><span class="o">+</span><span class="n">string</span><span class="p">])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;val_&#39;</span><span class="o">+</span><span class="n">string</span><span class="p">])</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plot_graphs</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">)</span>
+<span class="n">plot_graphs</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="s2">&quot;loss&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../output_77_0.png" /></p>
+<p><img alt="png" src="../output_77_1.png" /></p>
+<h2 id="_42">টেন্সরবোর্ড দিয়ে প্লটিং</h2>
+<p>আমরা সারাজীবন ‘ম্যাটপ্লটলিব’ এই কাজে ব্যবহার করলেও এখন টেন্সরবোর্ড কোন ধরনের কোড ছাড়াই অ্যাক্যুরেসি এবং লসকে প্লট এবং ট্র্যাকিং করে দেখাচ্ছে। </p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">tensorboard</span>
+<span class="o">%</span><span class="n">tensorboard</span> <span class="o">--</span><span class="n">logdir</span> <span class="n">logs</span>
+</code></pre></div>
+<pre><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/tensorboard.png" /></p>
+<h2 id="_43">দুটা উদাহরণ</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># &#39;sentence&#39; এর মধ্যে যেকোন পত্রিকা থেকে কয়েকটা লাইন দিয়ে সেটাকে দেখতে পারি কোন ক্যাটাগরিতে পড়বে</span>
+
+<span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;২০১৯ সালটা খুব একটা ভালো কাটেনি বাংলাদেশ জাতীয় ক্রিকেট দলের। খেলার সাফল্যের চেয়ে ব্যর্থতার পাল্লায় ছিল ভারী। ২০২০ সালটা হতে যাচ্ছে বেশ কঠিন কারণ এই বছরে যে বিদেশের মাটিতে অনেক খেলা রয়েছে।&quot;</span><span class="p">]</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding_type</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">padded</span><span class="p">))</span>
+</code></pre></div>
+<pre><code>[[6.7284830e-02 4.7851133e-04 6.9680568e-06 2.1927952e-04 9.1914487e-01
+  1.9559868e-05 4.4392105e-03 8.1799440e-03 2.2677139e-04]]
+</code></pre>
+<p>স্বভাবতই, এখানে সবচেয়ে বেশি প্রবাবিলিটি ডিস্ট্রিবিউশন এসেছে 
+'খেলা'তে। নিচের ছবিটা দেখুন। এখানে সবচেয়ে বেশি (8.1799440) এসেছে ৮ নম্বরে, স্পোর্টস। </p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/labels.png" /></p>
+<p>ছবি: আমাদের ক্যাটাগরি, যেটাকে কনভার্ট করেছিলাম সংখ্যায়</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># এখানে কয়েকটা লাইন দিয়ে দেখুন কী ক্যাটাগরিতে পড়বে</span>
+
+<span class="n">sentence</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;লালমনিরহাটের পাটগ্রাম উপজেলায় আবু ইউনুছ মোহাম্মদ শহীদুন্নবী জুয়েলকে পিটিয়ে ও পুড়িয়ে হত্যার ঘটনায় হওয়া মামলায় আরও পাঁচজনকে গ্রেপ্তার করেছে পুলিশ। গত মঙ্গলবার রাতে তাঁদের ধরা হয়। আজ বুধবার আদালতের মাধ্যমে তাঁদের কারাগারে পাঠিয়েছে পুলিশ।&quot;</span><span class="p">]</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="n">padded</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">padding_type</span><span class="p">,</span> <span class="n">truncating</span><span class="o">=</span><span class="n">trunc_type</span><span class="p">)</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">padded</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+
+<span class="c1"># এখানে শুরুর দিকে label এর জন্য লেবেলএনকোডার থেকে উল্টা ট্রান্সফরমেশন চাচ্ছি</span>
+<span class="c1"># অর্থাৎ সংখ্যা থেকে আসল ক্যাটাগরিতে ফলাফল দেখতে চাচ্ছি, সেটা লুপে দেখাবে </span>
+<span class="c1"># তাদের অ্যাসোসিয়েট প্রবাবিলিটি ডিস্ট্রিবিউশন দিয়ে</span>
+<span class="c1"># prediction = prediction</span>
+<span class="c1"># total = 0</span>
+
+<span class="c1">#for k in range(len(prediction[0])):</span>
+<span class="c1">#        print(label.inverse_transform([[k]]))</span>
+<span class="c1">#        print(&#39;%f %%&#39; %(prediction[0,k]*100))</span>
+<span class="c1">#        total += prediction[0,k]*100</span>
+</code></pre></div>
+<pre><code>[[9.9943632e-01 2.7223618e-04 1.5277365e-05 3.8175553e-05 1.6228917e-04
+  2.2223612e-06 1.5392798e-05 5.2140495e-05 5.8631713e-06]]
+</code></pre>
+<p>এখানে সর্বোচ্চ (9.9943632) হচ্ছে প্রথম, অর্থাৎ 'বাংলাদেশ' ক্যাটাগরিতে পড়েছে। </p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/no1.png" /></p>
+<p>ছবি: প্রথমটাই ক্যাটাগরি 'বাংলাদেশ'।  </p>
+<h2 id="_44">ওয়ার্ড এমবেডিংগুলোকে ডিস্কে সেভ করি</h2>
+<p>আমাদের ট্রেনিং এর সময়ে যেই ওয়ার্ড এমবেডিংগুলো শিখেছি, সেগুলোকে সেভ করবো পরে এমবেডিং প্রজেক্টরে। সে এক অসাধারণ অভিজ্ঞতা! এখানে এমবেডিংগুলো মডেলের এমবেডিং লেয়ারের 'ওয়েট' হিসেবে থাকে। এখানে ওয়েটের ম্যাট্রিক্স এর শেপ (vocab_size, embedding_dimension) হিসেবে ধরে নেই।</p>
+<p>এখানে মডেলের  get_layer() এবং get_weights() থেকে ওয়েট পাওয়া যাবে।</p>
+<div class="highlight"><pre><span></span><code><span class="n">weights</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s1">&#39;embedding_2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="_45">ভোকাবুলারি সাইজ এবং এমবেডিং ডাইমেনশন</h2>
+<p>মডেলের লেয়ার ধরে আমরা শুরুর ইনপুট লেয়ার ধরে vocab_size, embedding_dim এর শেপ করার চেষ্টা করতে পারি।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># শেপ দেখুন (vocab_size, embedding_dim)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> 
+</code></pre></div>
+<pre><code>(2040686, 8)
+</code></pre>
+<h2 id="-">শব্দকে ‘ভিজুয়ালাইজেশন’ - অনেক ডাইমেনশনে</h2>
+<p>আমাদের প্রতিটা শব্দ - ধরুন, বাংলা শব্দকে সংখ্যায় নিয়ে যাবার আগে সেটাকে টোকেনে ভাগ করে ফেলি। মানুষ এই শব্দগুলোকে ঠিকমতো বুঝতে চাইলে সেটাকে প্লট করতে হবে। আমরা মেশিন লার্নিং এর যেকোনো জিনিস বুঝতে চাইলে সেটাকে শুরুতে ‘ভিজুয়ালাইজ’ করার জন্য আমরা দুই ডাইমেনশনে প্লট করি। </p>
+<p>মানুষের মাথা - বিশেষ করে মাথার ‘নিউরাল নেটওয়ার্ক’ এতটাই চমৎকার যে - যে কোনো ডাটাকে ঠিকমতো প্লটিং করতে পারলে সেটার মধ্যে প্যাটার্ন খুঁজে বের করে ফেলবে আমাদের অসাধারণ মাথা। তবে সেই ডাটা অনেক মানে অনেক বেশি হলে খালি চোখে সেটা কয়েক ডাইমেনশনে দেখা কষ্টকর।</p>
+<p>তবে, এই শব্দগুলোকে সংখ্যায় পরিবর্তন করলে সেগুলোকে অনেকগুলো ডাইমেনশনে অর্থাৎ শতাধিক এক্সিসে প্লট করলে সম্পর্কের ভালো ধারণা পাওয়া যায়। সেখানে প্রতিটা শব্দের সাথে আরেকটা শব্দের সম্পর্ক, কে কার কাছে এবং দুরে - অথবা কে কার থেকে কতো দুরে, আপেক্ষিক এবং আসল কাছে দুরের ধারণা থেকে অসাধারণ প্রজ্ঞা পাওয়া যায়। ধরুন, গত ২০ বছরের পুরো বাংলাদেশের নামকরা বাংলা খবরের কাগজের প্রতিটা শব্দকে আমরা যদি ১২৮ ডাইমেনশনে (যতো বেশি, ততো বেশি প্রসেসিং ক্ষমতা দরকার) প্লট করি, তখন সেই শব্দগুলোর মধ্যে কোন শব্দগুলো বারবার ঘুরে ফিরে আসছে এবং কোন শব্দগুলো আরেকটা শব্দের সাথে প্রথাগত সম্পর্কিত না হলেও সেখানে ওই ঘটনার জন্য একটা সম্পর্কের হিসেব মানুষকে অন্যভাবে চিন্তা করতে বাধ্য করছে।</p>
+<h2 id="_46">শব্দের এমবেডিংগুলোকে ‘ভিজুয়ালাইজেশন’</h2>
+<p>শব্দের এমবেডিংগুলোকে ‘ভিজুয়ালাইজ’ করতে হলে আমাদের vecs.tsv এবং meta.tsv ফাইলদুটোকে আপলোড করতে হবে এমবেডিং প্রজেক্টরে। আমরা চলে যাই এমবেডিং প্রজেক্টরে উপরের লিংক দিয়ে। এটা লোকাল ‘টেন্সরবোর্ড’ ইন্সট্যান্স দিয়ে চালানো সম্ভব। তবে, অনেক সময়ে লোকাল কম্পিউটারে না করে এটা আপলোড করি টেন্সরফ্লো প্রজেক্টরে। ‘লোড ডাটা’ ক্লিক করে আপলোড করে দেই দুটো ফাইল। </p>
+<p>এখন এই এমবেডিং যেগুলোকে আমরা ট্রেনিং করেছিলাম, সেগুলো ভিজুয়ালাইজেশন এ আসবে। আমাদের এখানে শব্দগুলোর সাথে যেগুলো কাছাকাছি শব্দ সেগুলোকে দেখা যাবে এর কাছাকাছি। কিভাবে একটা শব্দ আরেকটা শব্দের সাথে সম্পর্কযুক্ত সেটা বোঝা যাবে এই এমবেডিং প্রজেক্টরে। যেকোনো একটা শব্দ লিখে সার্চ দিন, আপনি পেয়ে যাবেন ওই শব্দগুলোর সাথে সম্পর্কিত শব্দগুলো কি কি হতে পারে। এটা একটা মজার খেলা।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># আমরা উল্টা দিক থেকে দেখতে পারি কিনা?</span>
+<span class="c1"># দরকার এমবেডিং এর সময়</span>
+
+<span class="n">reverse_word_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+
+<span class="k">def</span> <span class="nf">decode_sentence</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">reverse_word_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">text</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">decode_sentence</span><span class="p">(</span><span class="n">training_padded</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">training_sentences</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div>
+<pre><code>গাজীপুরের কালিয়াকৈর উপজেলার তেলিরচালা এলাকায় আজ বৃহস্পতিবার রাতের টিফিন খেয়ে একটি পোশাক কারখানার ৫০০ শ্রমিক অসুস্থ হয়ে পড়েছেন। এ ঘটনায় বিক্ষোভ করেছেন ওই কারখানার শ্রমিকেরা।সফিপুর মডার্ন হাসপাতালের জরুরি বিভাগের চিকিত্সক আল আমিন প্রথম আলো ডটকমকে বলেন খাদ্যে বিষক্রিয়ায় তাঁরা শ্রমিকেরা অসুস্থ হয়ে পড়েছেন। এতে আতঙ্কিত হওয়ার কিছু নেই। ..........
+জাতীয় সংসদে বিএনপি চেয়ারপারসন ও বিরোধীদলীয় নেতা খালেদা জিয়ার দেওয়া ভাষণে ভারত সম্পর্কে আনা নানা অভিযোগের জবাব দিয়েছে দেশটি। ভারতের পক্ষ থেকে এ সংক্রান্ত একটি লিখিত জবাব খালেদা জিয়াকে দেওয়া হয়েছে। ...........
+bangladesh
+</code></pre>
+<h2 id="_47">এমবেডিং প্রজেক্টরের জন্য ফাইল তৈরি</h2>
+<p>এমবেডিং প্রজেক্টর এর জন্য ‘ভেক্টর’ এবং ‘মেটাডাটা’র জন্য দুটো ফাইল তৈরি  করতে হবে যার মধ্যে শব্দ এবং তার সম্পর্কিত মেটাডাটা মধ্যে সম্পর্ক স্থাপন করা জরুরি। এখানে vecs.tsv এবং meta.tsv ফাইল দুটোর সাইজ দুটো মিলে ২০০ মেগাবাইট হতে পারে।</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## প্রজেক্টরে দেখানোর জন্য গুগল কোলাব অথবা নিজের মেশিনে &#39;সেভ&#39; করে রাখি</span>
+
+<span class="kn">import</span> <span class="nn">io</span>
+
+<span class="n">out_v</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;vecs.tsv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">out_m</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;meta.tsv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">word_num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
+  <span class="n">word</span> <span class="o">=</span> <span class="n">reverse_word_index</span><span class="p">[</span><span class="n">word_num</span><span class="p">]</span>
+  <span class="n">embeddings</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">word_num</span><span class="p">]</span>
+  <span class="n">out_m</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">word</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="n">out_v</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">out_v</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">out_m</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="_48">এমবেডিং প্রজেক্টর</h2>
+<p>এমবেডিং প্রজেক্টরে দেখানোর জন্য ভেক্টর এবং মেটা ফাইলের ট্যাব সেপারেটেড ভ্যালু হিসেবে ডাউনলোড করে নেব।</p>
+<p>ওয়েটগুলোকে ডিস্কে 'সেভ' করে রাখি। আমাদের এমবেডিং প্রজেক্টরে (http://projector.tensorflow.org/) এই দুটো ট্যাব সেপারেটেড ফরম্যাট ফাইল আপলোড করলেই দেখা যাবে হাই ডাইমেনশনাল ডাটাগুলো কিভাবে একে অপরের সাথে সম্পর্কিত। একটা ভেক্টরের ফাইল, (যার ভেতরে এমবেডিংগুলো থাকছে) আরেকটাতে মেটাডাটা (যার ভেতরে শব্দগুলো থাকছে) হলেই চলবে।</p>
+<h2 id="_49">ডাউনলোড করে নেই ফাইল দুটো</h2>
+<p>গুগল কোলাবে এই নোটবুকটা চালালে প্রথম ফাইল সয়ংক্রিয় ভাবে ডাউনলোডের হয়ে যাবে। পরেরটার জন্য আপনার পারমিশন চাইবে। আর সেটা মিস করলে বামের ফাইল ব্রাউজার দিয়ে নামিয়ে নিতে পারেন। অথবা 'ভিউ' থেকে  টেবিল অফ কনটেন্ট' দিয়ে নামিয়ে নিতে পারেন। লোকাল মেশিন হলে এমনিতেই পেয়ে যাচ্ছেন। </p>
+<p><div class="highlight"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+  <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+  <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;vecs.tsv&#39;</span><span class="p">)</span>
+  <span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;meta.tsv&#39;</span><span class="p">)</span>
+</code></pre></div>
+    <IPython.core.display.Javascript object></p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/emb1.png" /></p>
+<p>ছবি: এমবেডিং প্রজেক্টরের কয়েকটা ছবি</p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/emb3.png" /></p>
+<p>ছবি: ২০০ ডাইমেনশন, পয়েন্ট বেশি</p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/emb4.png" /></p>
+<p>ছবি: এখানে আরো বেশি পয়েন্ট</p>
+<p><img alt="alt text" src="https://github.com/raqueeb/nlp_bangla/raw/master/assets/emb5.png" /></p>
+<p>ছবি: পুরো নিউজ পেপার ডাটাসেট</p>
+<h2 id="_50">কেরাস মডেলকে আবার লোড করে দেখি</h2>
+<p>ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং’য়ে মডেলগুলো ট্রেইন করতে এতো বেশি সময় লাগে যা অনেকের ধৈর্যচ্যুতি ঘটাতে পারে। আর সে কারণেই এই মডেলগুলোকে ‘সেভ’ করে রাখা। এখন মডেলটাকে লোড করে ‘আর্কিটেকচার’ বোঝার চেষ্টা করি। </p>
+<div class="highlight"><pre><span></span><code><span class="n">new_model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;/content/gdrive/My Drive/Colab Notebooks/saved_model/my_model&#39;</span><span class="p">)</span>
+
+<span class="c1"># সেটার আর্কিটেকচার দেখি</span>
+<span class="n">new_model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding_2 (Embedding)      (None, 500, 8)            16325488  
+_________________________________________________________________
+bidirectional_2 (Bidirection (None, 500, 128)          37376     
+_________________________________________________________________
+bidirectional_3 (Bidirection (None, 64)                41216     
+_________________________________________________________________
+dense_1 (Dense)              (None, 9)                 585       
+=================================================================
+Total params: 16,404,665
+Trainable params: 16,404,665
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="ফুটার">
+      
+        
+        <a href="../oov-token/" class="md-footer__link md-footer__link--prev" aria-label="পূর্ববর্তী: &#39;আউট অফ ভোকাবুলারি&#39; টোকেন এবং প্যাড সিকোয়েন্স" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                পূর্ববর্তী
+              </span>
+              'আউট অফ ভোকাবুলারি' টোকেন এবং প্যাড সিকোয়েন্স
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../class-json/" class="md-footer__link md-footer__link--next" aria-label="পরে: বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                পরে
+              </span>
+              বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            সৃজনশীল লাইসেন্সিং ২০১৯ - ২০২০ &copy; রকিবুল হাসান
+          </div>
+        
+        
+        তৈরি
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          এমকেডকস ম্যাটেরিয়াল
+          </a>
+        
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/raqueeb" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="http://m.me/raqueeb" target="_blank" rel="noopener" title="m.me" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94 8.35 7.51 6.63 11.86 8.05 58.23A19.92 19.92 0 0 0 122 502.31c52.91-23.3 53.59-25.14 62.56-22.7C337.85 521.8 504 423.7 504 248.57 504 110.34 396.59 8 256.55 8zm149.24 185.13-73 115.57a37.37 37.37 0 0 1-53.91 9.93l-58.08-43.47a15 15 0 0 0-18 0l-78.37 59.44c-10.46 7.93-24.16-4.6-17.11-15.67l73-115.57a37.36 37.36 0 0 1 53.91-9.93l58.06 43.46a15 15 0 0 0 18 0l78.41-59.38c10.44-7.98 24.14 4.54 17.09 15.62z"/></svg>
+      </a>
+    
+      
+      
+      <a href="tel:+8801713095767" target="_blank" rel="noopener" title="" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/raqueeb" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/raqueeb/" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://instagram.com/raqueeb" target="_blank" rel="noopener" title="instagram.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://facebook.com/raqueeb" target="_blank" rel="noopener" title="facebook.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["instant"], "translations": {"clipboard.copy": "\u0995\u09cd\u09b2\u09bf\u09aa\u09ac\u09cb\u09b0\u09cd\u09a1\u09c7 \u0995\u09aa\u09bf \u0995\u09b0\u09c1\u09a8", "clipboard.copied": "\u0995\u09cd\u09b2\u09bf\u09aa\u09ac\u09cb\u09b0\u09cd\u09a1\u09c7 \u0995\u09aa\u09bf \u09b9\u09df\u09c7\u099b\u09c7", "search.config.lang": "en", "search.config.pipeline": " ", "search.config.separator": "[\\s\\-]+", "search.placeholder": "\u09b8\u09be\u09b0\u09cd\u099a", "search.result.placeholder": "\u09b8\u09be\u09b0\u09cd\u099a \u099f\u09be\u0987\u09aa \u0995\u09b0\u09c1\u09a8", "search.result.none": "\u0995\u09bf\u099b\u09c1 \u09aa\u09be\u0993\u09df\u09be \u09af\u09be\u09df\u09a8\u09bf", "search.result.one": "\u09e7 \u099f\u09be \u09a1\u0995\u09c1\u09ae\u09c7\u09a8\u09cd\u099f", "search.result.other": "# \u099f\u09be \u09a1\u0995\u09c1\u09ae\u09c7\u09a8\u09cd\u099f", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>

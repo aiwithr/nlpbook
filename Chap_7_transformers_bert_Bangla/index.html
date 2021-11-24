@@ -1,0 +1,1748 @@
+
+<!doctype html>
+<html lang="bn" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="'হাতেকলমে ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং: শুরুর ধারণা' 'রিকারেন্ট নিউরাল নেটওয়ার্কস' এবং 'লং শর্ট টার্ম মেমরি'">
+      
+      
+      
+        <meta name="author" content="রকিবুল হাসান">
+      
+      
+        <link rel="canonical" href="https://aiwithr.github.io/nlpbook/Chap_7_transformers_bert_Bangla/">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক - হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=SiyamRupali:300,400,400i,700%7CSiyamRupali&display=fallback">
+        <style>:root{--md-text-font-family:"SiyamRupali";--md-code-font-family:"SiyamRupali"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          কনটেন্টে যান
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="হেডার">
+    <a href=".." title="হাতেকলমে &#39;বাংলা&#39; ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" class="md-header__button md-logo" aria-label="হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="সার্চ" placeholder="সার্চ" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="মুছে ফেলুন" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/raqueeb/mltraining/" title="রিপোজিটরিতে যান" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    raqueeb/mltraining
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="ন্যাভিগেশন" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="হাতেকলমে &#39;বাংলা&#39; ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" class="md-nav__button md-logo" aria-label="হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/raqueeb/mltraining/" title="রিপোজিটরিতে যান" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    raqueeb/mltraining
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        হাতেকলমে 'বাংলা' ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toc/" class="md-nav__link">
+        বইয়ের সূচীপত্র, টেবিল অফ কনটেন্ট
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why-writing/" class="md-nav__link">
+        কেন বইটা লিখতে চাইলাম?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedication/" class="md-nav__link">
+        উৎসর্গ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../courtesy/" class="md-nav__link">
+        কৃতজ্ঞতা এবং বাড়তি রিডিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequence/" class="md-nav__link">
+        মানুষের এবং ভাষাগত সিকোয়েন্সের ধারণা
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rnn/" class="md-nav__link">
+        রিকারেন্ট নিউরাল নেটওয়ার্কসের গল্প
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../colab-github/" class="md-nav__link">
+        গুগল কোলাব এবং গিটহাবের ব্যবহার
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../token/" class="md-nav__link">
+        'এনএলপি' এর টোকেনাইজেশন
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text-preprocessing/" class="md-nav__link">
+        টেক্সট প্রি-প্রসেসিং এর ধারণা
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seq-padding/" class="md-nav__link">
+        টেক্সট থেকে সিকোয়েন্স এবং প্যাডিং
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oov-token/" class="md-nav__link">
+        'আউট অফ ভোকাবুলারি' টোকেন এবং প্যাড সিকোয়েন্স
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Chap_6_bangla_classification/" class="md-nav__link">
+        ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট - নোটবুক
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../class-json/" class="md-nav__link">
+        বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="টেবিল অফ কনটেন্ট">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      টেবিল অফ কনটেন্ট
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    হাতেকলমে ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং: শুরুর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    ট্রান্সফরমার্স মডেল: হাগিংফেস ট্রান্সফরমার্স লাইব্রেরি
+  </a>
+  
+    <nav class="md-nav" aria-label="ট্রান্সফরমার্স মডেল: হাগিংফেস ট্রান্সফরমার্স লাইব্রেরি">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    ট্রান্সফর্মারস এবং হাব
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    হাগিংফেস কী?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    কার্বন ফুটপ্রিন্ট কমানো
+  </a>
+  
+    <nav class="md-nav" aria-label="কার্বন ফুটপ্রিন্ট কমানো">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    অনেক প্যারামিটার
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    কিভাবে মডেলগুলো পাওয়া যাবে?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    মডেল কিভাবে এক্সেস করবো?
+  </a>
+  
+    <nav class="md-nav" aria-label="মডেল কিভাবে এক্সেস করবো?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    ‘কেট্রেইন’ কী?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    “বাংলা বার্ট বেইজ”
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    ১১ কোটি প্যারামিটার
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    কেট্রেইন ব্যবহার করে হাগিংফেসের ট্রান্সফর্মার্স: টেক্সট ক্লাসিফিকেশন
+  </a>
+  
+    <nav class="md-nav" aria-label="কেট্রেইন ব্যবহার করে হাগিংফেসের ট্রান্সফর্মার্স: টেক্সট ক্লাসিফিকেশন">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    ডাটা লোড করছি নতুন অ্যারেতে
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    কিছু ভিজ্যুয়ালাইজেশন
+  </a>
+  
+    <nav class="md-nav" aria-label="কিছু ভিজ্যুয়ালাইজেশন">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    ধাপ ১: ডাটাকে প্রি-প্রসেস এবং ট্রান্সফর্মারস মডেল তৈরি
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    মডেল ফাইল (যেকোন একটা)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    বার্ট এবং ডিস্টিল-বার্ট
+  </a>
+  
+    <nav class="md-nav" aria-label="বার্ট এবং ডিস্টিল-বার্ট">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    ডাটাসেটের প্রি-প্রসেসিং
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    তৈরি করি মডেল
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    ধাপ ২: (শুধুমাত্র দেখার জন্য) একটা ভালো লার্নিং রেট এস্টিমেট
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    ধাপ ৩: মডেল ট্রেনিং (লম্বা সময়)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    ধাপ ৪: মডেল ইভ্যালুয়েশন, কেমন করছে মডেল?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    ধাপ ৫: নতুন এনভায়রনমেন্টে মডেলের প্রেডিকশন
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    গুগল ড্রাইভে মডেল সেভ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    মডেলের সামারি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    মডেলের প্রেডিকশন এবং তার এক্সপ্লেনেশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    ট্রান্সফরমার্স মডেলের হিডেন স্টেট
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../next/" class="md-nav__link">
+        ট্রান্সফরমার মডেল: কোথায় যাব সামনে?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_17" type="checkbox" id="__nav_17" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_17">
+          আমি কে?
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="আমি কে?" data-md-level="1">
+        <label class="md-nav__title" for="__nav_17">
+          <span class="md-nav__icon md-icon"></span>
+          আমি কে?
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rh/" class="md-nav__link">
+        কেন লিখছি এতো বই?
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auto" class="md-nav__link">
+        None
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="টেবিল অফ কনটেন্ট">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      টেবিল অফ কনটেন্ট
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    হাতেকলমে ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং: শুরুর ধারণা
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    ট্রান্সফরমার্স মডেল: হাগিংফেস ট্রান্সফরমার্স লাইব্রেরি
+  </a>
+  
+    <nav class="md-nav" aria-label="ট্রান্সফরমার্স মডেল: হাগিংফেস ট্রান্সফরমার্স লাইব্রেরি">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    ট্রান্সফর্মারস এবং হাব
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    হাগিংফেস কী?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    কার্বন ফুটপ্রিন্ট কমানো
+  </a>
+  
+    <nav class="md-nav" aria-label="কার্বন ফুটপ্রিন্ট কমানো">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    অনেক প্যারামিটার
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    কিভাবে মডেলগুলো পাওয়া যাবে?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    মডেল কিভাবে এক্সেস করবো?
+  </a>
+  
+    <nav class="md-nav" aria-label="মডেল কিভাবে এক্সেস করবো?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    ‘কেট্রেইন’ কী?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    “বাংলা বার্ট বেইজ”
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    ১১ কোটি প্যারামিটার
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    কেট্রেইন ব্যবহার করে হাগিংফেসের ট্রান্সফর্মার্স: টেক্সট ক্লাসিফিকেশন
+  </a>
+  
+    <nav class="md-nav" aria-label="কেট্রেইন ব্যবহার করে হাগিংফেসের ট্রান্সফর্মার্স: টেক্সট ক্লাসিফিকেশন">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    ডাটা লোড করছি নতুন অ্যারেতে
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    কিছু ভিজ্যুয়ালাইজেশন
+  </a>
+  
+    <nav class="md-nav" aria-label="কিছু ভিজ্যুয়ালাইজেশন">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    ধাপ ১: ডাটাকে প্রি-প্রসেস এবং ট্রান্সফর্মারস মডেল তৈরি
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    মডেল ফাইল (যেকোন একটা)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-_1" class="md-nav__link">
+    বার্ট এবং ডিস্টিল-বার্ট
+  </a>
+  
+    <nav class="md-nav" aria-label="বার্ট এবং ডিস্টিল-বার্ট">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-_2" class="md-nav__link">
+    ডাটাসেটের প্রি-প্রসেসিং
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    তৈরি করি মডেল
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    ধাপ ২: (শুধুমাত্র দেখার জন্য) একটা ভালো লার্নিং রেট এস্টিমেট
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    ধাপ ৩: মডেল ট্রেনিং (লম্বা সময়)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    ধাপ ৪: মডেল ইভ্যালুয়েশন, কেমন করছে মডেল?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    ধাপ ৫: নতুন এনভায়রনমেন্টে মডেলের প্রেডিকশন
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    গুগল ড্রাইভে মডেল সেভ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    মডেলের সামারি
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    মডেলের প্রেডিকশন এবং তার এক্সপ্লেনেশন
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    ট্রান্সফরমার্স মডেলের হিডেন স্টেট
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>হাগিংফেসের ট্রান্সফর্মার, টেক্সট ক্লাসিফিকেশন - নোটবুক</h1>
+                
+                <p><a href="https://colab.research.google.com/github/raqueeb/nlp_bangla/blob/master/Chap_7_transformers_bert_Bangla.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h2 id="_1">হাতেকলমে ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং: শুরুর ধারণা</h2>
+<p><a href="https://aiwithr.github.io/nlpbook/">৭ম অধ্যায়</a></p>
+<h2 id="_2">ট্রান্সফরমার্স মডেল: হাগিংফেস ট্রান্সফরমার্স লাইব্রেরি</h2>
+<p>সত্যি কথা বলতে আমার এই বুড়ো বয়সে,  আমি যতটা এক্সাইটেড তার বেশিরভাগ এর জন্য  দায় নিতে হবে এই ট্রান্সফরমার্স মডেলকে।  ন্যাশনাল ল্যাঙ্গুয়েজ ল্যান্ডস্কেপ এটা আসলেই পাল্টে দিয়েছে ল্যাঙ্গুয়েজ ভিত্তিক মেশিন লার্নিংকে। ডিপ লার্নিং ফ্রেমওয়ার্ক, যেমন টেন্সরফ্লো এবং পাইটর্চ লাইব্রেরীগুলোর সাথে ট্রান্সফরমারসের ‘বিল্ট-ইন’ ইম্প্লেমেন্টেশন না থাকার ফলে আমাদের একটু কষ্ট হচ্ছে। এর একটাই পথ। এই সংক্রান্ত ‘পিএইচডি’ প্রোগ্রামে ভর্তি হয়ে যাওয়া।</p>
+<h3 id="_3">ট্রান্সফর্মারস এবং হাব</h3>
+<p>তবে, ইদানিং আরেকটা রাস্তা দেখছি আমরা। সেটা হচ্ছে হাগিংফেসের ট্রান্সফর্মারস লাইব্রেরি। অসাধারণ একটা ইম্প্লেমেন্টেশন বর্তমান ন্যাচারাল ল্যাঙ্গুয়েজ আন্ডারস্ট্যান্ডিং (এনএলইউ) এবং ন্যাচারাল ল্যাঙ্গুয়েজ জেনারেশনে (এনএলজি)। আমাদের সুবিধার জন্য এরা প্রায় একশোর বেশি ভাষায় ৩৫ টার মতন প্রি-ট্রেইন্ড মডেল তৈরি করে রেখেছে আমাদের কাজে। এই ‘প্রি-ট্রেইন্ড ‘ মডেলগুলোকে বুঝতে আপনি হাতে কলমে পাইথন ডিপ লার্নিং বইটা দেখতে পারেন। পুরো বইয়ের  কনটেন্ট অনলাইনে আছে। সবচেয়ে বড় ব্যাপারটা হচ্ছে এই মডেল গুলো সাথে পৃথিবীর সবচেয়ে বড় ডিপ লার্নিং ফ্রেমওয়ার্ক টেন্সরফ্লো এবং পাইটর্চের ভালো ইন্ট্রিগেশন আছে।</p>
+<h3 id="_4">হাগিংফেস কী?</h3>
+<p>বর্তমানে সবচেয়ে বড় বড় ট্রান্সফরমার্স লাইব্রেরিগুলো বানিয়ে সেগুলো কে সবার মধ্যে ছড়িয়ে দিতে চলে এসেছে হাগিং সেলিং কোম্পানি টা। সবচেয়ে বড় ফিচার হচ্ছে বর্তমানের সর্বশেষ প্রযুক্তি গুলোকে ছেড়ে দেওয়া হচ্ছে আমাদের হাতে।  আমার ল্যাপটপ এবং বাচ্চার গেমিং পিসি মিলিয়ে মাঝারি ধরনের ডিপ লার্নিং মডেল কাজ করাতে গেলে প্রায় 5 থেকে 7 দিন লেগে যায়।  সেখানে এ ধরনের  মডেলগুলো কে  ডাউনলোড সরাসরি ভাবে এখনই।  এর পাশাপাশি গুগোল ক্লাবের জিপিইউ ব্যবহার করতে গেলে 12 ঘন্টার একটা সীমাবদ্ধতা আছে।  সে কারণে এ ধরনের মডেল যেগুলো আগের থেকে ট্রেনিং করা হয়েছে সে গুলোকে ব্যবহার করতে পারছি এই ধরনের প্লাটফর্ম থেকে।</p>
+<h2 id="_5">কার্বন ফুটপ্রিন্ট কমানো</h2>
+<p>এই হাবের কারণে পুরো পৃথিবী জুড়ে একই ডিপ লার্নিং মডেলকে বারবার ট্রেনিং না করিয়ে পৃথিবীব্যাপী প্রচুর বিদ্যুৎ খরচ এবং কার্বন ফুটপৃন্ট কমে আসছে।  বড় বড় ডাটা সেন্টারে এক ধরনের ডিপ লার্নিং মডেল ট্রেনিং না করিয়ে 1মডেল দিয়েই চালাতে পারছি আমাদের হাতের কাজ ।  এই মডেলগুলো বড় বড় কাজ কাজের জন্য তৈরি করা  হলেও এগুলোকে আমাদের দৈনন্দিন কাজে ব্যবহারের জন্য  অসাধারণ কাজ করে।  এগুলোকে আমরা বলি ডাউনস্ট্রিম কাজ।  গুগল-ফেসবুকের বিশাল বিশাল মডেল আমাদের ছোটখাট টেক্সট ক্লাসিফিকেশন অথবা এন্টিটি রিকগনিশন এর কাজের অসাধারণ ফলাফল দেয়।</p>
+<h3 id="_6">অনেক প্যারামিটার</h3>
+<p>বড় বড় মডেল যেমন,   BERT, RoBERTa, GPT, GPT-2, XLNet, ইত্যাদি এবং হাগিংফেসের নিজস্ব  DistilBERT, DistilGPT-2 ইত্যাদি সব মডেল কে কল করা যায় মাত্র তিন লাইনের কোড দিয়ে। এ ধরনের মডেলগুলোর এম্বেডিং ব্যবহার করা যায় যেকোনো কোড থেকে। শুধুমাত্র ইন্টারনেট সংযোগ থাকলেই হবে। তবে ইন্টারনেট ছাড়াও এ ধরনের মডেল গুলো চালানো যায়। </p>
+<p>সবচেয়ে বড় ব্যাপার হচ্ছে এ ধরনের বড় বড় মডেলগুলো থেকে বিশেষ করে এই আগে থেকে তৈরি মডেলগুলোকে ব্যবহার করা যায় আমাদের মত কাস্টম কাজে।  আপনি যদি প্রশ্ন উত্তর সেশন,  সেন্টিমেন্ট এনালাইসিস সামারাইজেশন এন্টিটি রিকগনিশন এগুলো এখন খুব সহজ হয়ে গিয়েছে।  যেহেতু ফাকিং ফ্রেন্ডস ট্রান্সফর্মার খুব জনপ্রিয় লাইব্রেরী সে কারণে এগুলো প্রতিনিয়ত আপডেট হচ্ছে পুরো পৃথিবী থেকে।</p>
+<h2 id="_7">কিভাবে মডেলগুলো পাওয়া যাবে?</h2>
+<p>যেহেতু মডেলগুলো আগে থেকে তৈরি করা,  সে কারণে আমরা ফিলটার ব্যবহার করে এগুলো খুঁজতে পারি। তবে ট্রান্সফরমারের জন্য সবচেয়ে বেশি সাপোর্ট এসেছে পাইটর্চ এর জন্য,  তবে আমরা যারা টেন্সরফ্লো ব্যবহার করি,  তাদের খুব একটা সমস্যা হওয়ার কথা নয়। </p>
+<h2 id="_8">মডেল কিভাবে এক্সেস করবো?</h2>
+<p>নিচের কোডটা দেখুন। লাইনের একটা কোড যেটা আপনাকে সাহায্য করবে যেকোনো হাগিংফেস  ট্রান্সফরমার্স মডেল এক্সেস করার জন্য। সামনের উদাহরণে আপনারা দেখবেন কোথায়  এবং কিভাবে আমরা বাংলা মডেল ব্যবহার করব।</p>
+<p><div class="highlight"><pre><span></span><code>from transformers import TFAutoModel, AutoTokenizer
+model = TFAutoModel.from_pretrained(&quot;&lt;মডেলের নাম&gt;&quot;)
+tokenizer = AutoTokenizer.from_pretrained(&quot;&lt;মডেলের নাম&gt;&quot;)
+</code></pre></div>
+এবং ব্যাপারটা এতটাই সহজ। তবে আমি চাচ্ছি আপনাদেরকে আরেকটা ফ্রেমওয়ার্কের সাথে পরিচয় করে দিতে - যাতে আপনারা এই ট্রান্সফর্মার মডেলগুলো থেকে আরো অনেক বেশি ‘ডাউনস্ট্রিম’ কাজ পেতে পারেন। </p>
+<h3 id="_9">‘কেট্রেইন’ কী?</h3>
+<p><code>ktrain is a lightweight wrapper for the deep learning library TensorFlow Keras (and other libraries) to help build, train, and deploy neural networks and other machine learning models.</code></p>
+<p>এটা ঠিক যে আমরা সরাসরি ট্রান্সফরমারস ব্যবহার করতে পারতাম, তবে সেটা এই বইটাকে আরও বড় করে তুলবে। আর, তাই পাইটর্চ এর সাথে “সিম্পল ট্রান্সফরমার্স” এর মত আরেকটা মেশিন লার্নিং ফ্রেমওয়ার্কের সাথে কাজ করব এখন। এর নাম “কেট্রেইন”, তবে এটা টেন্সরফ্লো এর কমপ্লেক্সিটি লুকিয়ে রাখবে আমাদের কাছ থেকে। </p>
+<h3 id="_10">“বাংলা বার্ট বেইজ”</h3>
+<p>এর পাশাপাশি আমাদের প্রয়োজন বাংলায় কিছু প্রি-ট্রেইনড মডেল, যার বেশ কয়েকটা মডেল আছে হাগিংফেস মডেল হাবে। তবে, আমাদের কাছে আমরা ব্যবহার করব “বাংলা বার্ট বেইজ”। এটা একটা বাংলার প্রি-ট্রেইনড ল্যাঙ্গুয়েজ মডেল, গুগলের ‘বার্ট’ এর মাস্ক ল্যাঙ্গুয়েজ মডেলিং ব্যবহার করে তৈরি করা হয়েছে। এর কর্পাস বাংলা অস্কার এবং বাংলা উইকিপিডিয়া ডাম্প ডাটাসেট থেকে সাহায্য নিয়েছেন।
+এই দুটো কর্পাস ব্যবহার করে পুরোটাকে প্রসেস করা হয়েছে বার্ট ফরম্যাটে। এর সাথে, বাংলা এনএলপি প্যাকেজ ব্যবহার করে বাংলা ট্রেনিং ‘সেন্টেন্সপিস’ মডেল  তৈরি করা হয়েছে যার ভোকাবুলারি সাইজ ১ লক্ষর উপরে। এই  ভগবতী এটা আমরা নেব হাগিংফেস মডেল হাব থেকে।</p>
+<h3 id="_11">১১ কোটি প্যারামিটার</h3>
+<p>এই ট্রেনিং এর জন্য ব্যবহার করা হয়েছে  গুগল গিটহাবের স্ক্রিপ্ট যা পাওয়া যাবে https://github.com/google-research/bert) লিঙ্কে। এটা একটা আন-কেসড মডেল (উপরের/নিচের কেস নয়) যার মধ্যে ১২ লেয়ার, ৭৬৪ হিডেন লেয়ার, ১২টা অ্যাটেনশন হেড এবং ১১ কোটি প্যারামিটার আছে। এর ১০ লক্ষ ট্রেনিং স্টেপ ট্রেনিং করা হয়েছে গুগলের ক্লাউড টিপিইউ ব্যবহার করে যা দিয়েছে গুগল টেন্সরফ্লো রিসার্চ ক্লাউড। </p>
+<h2 id="_12">কেট্রেইন ব্যবহার করে হাগিংফেসের ট্রান্সফর্মার্স: টেক্সট ক্লাসিফিকেশন</h2>
+<p>আমাদের আগের নিউজ ডাটাসেট  ব্যবহার করব দুটো মডেলের কাজের পার্থক্য বোঝার জন্য।  তবে দুটো মডেলে আমরা একই জিনিস ভিন্ন ভাবে করে দেখাবো যাতে আমরা নতুন জিনিস শিখতে পারি। </p>
+<p>এখানে ক্যাগল থেকে ভিন্নভাবে ডাটা ডাউনলোড করি। </p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KAGGLE_USERNAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span> <span class="c1"># জেসন ফাইল থেকে আইডিটা নিয়ে আসুন</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KAGGLE_KEY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;xxxxxxxxxxxxxxxxx&quot;</span> <span class="c1"># আপনার ক্যাগল কী</span>
+</code></pre></div>
+<p>এল এস টি এম নেটওয়ার্কের মতো এখানেও একই ডাঁটা সেট ব্যবহার করছি। এখানে ডাটাসেটের ভেতরের ফাইলগুলো দেখে নিচ্ছি।  আমরা ব্যবহার করব ডাটা সেটের ভার্সন টু ফাইলটা।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">kaggle</span> <span class="n">datasets</span> <span class="n">files</span> <span class="n">furcifer</span><span class="o">/</span><span class="n">bangla</span><span class="o">-</span><span class="n">newspaper</span><span class="o">-</span><span class="n">dataset</span>
+</code></pre></div>
+<pre><code>Warning: Looks like you're using an outdated API Version, please consider updating (server 1.5.10 / client 1.5.4)
+name                  size  creationDate         
+--------------------  ----  -------------------  
+data/data.json         4GB  2020-10-21 06:09:48  
+data_v2/data_v2.json   2GB  2020-10-21 06:09:48
+</code></pre>
+<p>ক্যাগলের ডাটাসেট ডাউনলোড স্পিড দেখছেন তো? একারণেই  ডাটাসেট হোস্ট করার জন্য আমার পছন্দ ক্যাগল।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">kaggle</span> <span class="n">datasets</span> <span class="n">download</span> <span class="n">furcifer</span><span class="o">/</span><span class="n">bangla</span><span class="o">-</span><span class="n">newspaper</span><span class="o">-</span><span class="n">dataset</span> <span class="o">-</span><span class="n">f</span> <span class="n">data_v2</span><span class="o">/</span><span class="n">data_v2</span><span class="o">.</span><span class="n">json</span>
+</code></pre></div>
+<pre><code>Downloading data_v2.json.zip to /content
+ 98% 434M/444M [00:03&lt;00:00, 102MB/s]
+100% 444M/444M [00:03&lt;00:00, 132MB/s]
+</code></pre>
+<p>ডাটাসেট ‘এক্সট্রাক্ট’ করে নিচ্ছি আমাদের কাজের সুবিধার্থে।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">unzip</span> <span class="n">data_v2</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">zip</span>
+</code></pre></div>
+<pre><code>Archive:  data_v2.json.zip
+  inflating: data_v2.json
+</code></pre>
+<h3 id="_13">ডাটা লোড করছি নতুন অ্যারেতে</h3>
+<p>আগের মত দুটো পাইথন লিস্টে আমাদের কনটেন্ট এবং ক্যাটাগরিকে নিয়ে নিচ্ছি।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_v2.json&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">datastore</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">datastore</span><span class="p">:</span>
+    <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">])</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">])</span>
+</code></pre></div>
+<p>একই লেবেল, সেট দিয়ে।</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>{'bangladesh',
+ 'economy',
+ 'education',
+ 'entertainment',
+ 'international',
+ 'life-style',
+ 'opinion',
+ 'sports',
+ 'technology'}
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">categories</span>
+</code></pre></div>
+<pre><code>['education',
+ 'opinion',
+ 'bangladesh',
+ 'economy',
+ 'international',
+ 'technology',
+ 'entertainment',
+ 'sports',
+ 'life-style']
+</code></pre>
+<p>এবার ট্রেইন-টেস্ট স্প্লিট ব্যবহার করছি। একই ডাটাসেট - তবে আলাদাভাবে করিয়ে দেখানো। আপনারা আরেকভাবে করবেন, এটাই নিয়ম। টেস্ট সাইজ ২০%। এখানে লেবেল স্ট্রিং হিসেবেই আছে। আলাদাভাবে ‘ওয়ান-হট এনকোডিং’ করিনি আমরা। দরকার নেই। সে বুঝে যাবে। </p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+  <span class="n">sentences</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div>
+<p>ইনস্টল করে নেই, কেট্রেইন। আমাদের অসাধারণ টুল, বিশেষ করে, ট্রান্সফর্মারস ব্যবহার করার জন্য।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">ktrain</span>
+</code></pre></div>
+<pre><code>Collecting ktrain
+[?25l  Downloading https://files.pythonhosted.org/packages/41/23/6f5addc2ade7c6240e2c9169bd7a9506cea17b35c9f322104a60dd4ba7fd/ktrain-0.25.2.tar.gz (25.3MB)
+[K     |████████████████████████████████| 25.3MB 140kB/s 
+Successfully installed cchardet-2.1.7 keras-bert-0.86.0 keras-embed-sim-0.8.0 keras-layer-normalization-0.14.0 keras-multi-head-0.27.0 keras-pos-embd-0.11.0 keras-position-wise-feed-forward-0.6.0 keras-self-attention-0.46.0 keras-transformer-0.38.0 ktrain-0.25.2 langdetect-1.0.8 sacremoses-0.0.43 sentencepiece-0.1.94 seqeval-0.0.19 syntok-1.3.1 tokenizers-0.9.3 transformers-3.5.1 whoosh-2.7.4
+</code></pre>
+<h2 id="_14">কিছু ভিজ্যুয়ালাইজেশন</h2>
+<p>আমাদের দরকার, এলি৫। সামনে দেখবেন বিশেষ করে এক্সপ্লেইন এর ক্ষেত্রে।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">amaiya</span><span class="o">/</span><span class="n">eli5</span><span class="nd">@tfkeras_0_10_1</span>
+</code></pre></div>
+<pre><code>Collecting git+https://github.com/amaiya/eli5@tfkeras_0_10_1
+  Cloning https://github.com/amaiya/eli5 (to revision tfkeras_0_10_1) to /tmp/pip-req-build-es1uh512
+Successfully built eli5
+Installing collected packages: eli5
+Successfully installed eli5-0.10.1
+</code></pre>
+<h3 id="-">ধাপ ১: ডাটাকে প্রি-প্রসেস এবং ট্রান্সফর্মারস মডেল তৈরি</h3>
+<p>আমাদের কাজ হচ্ছে টেক্সট ক্লাসিফিকেশন,  ইমপোর্ট দুটো জিনিসকে।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">ktrain</span>
+<span class="kn">from</span> <span class="nn">ktrain</span> <span class="kn">import</span> <span class="n">text</span>
+</code></pre></div>
+<p>কেট্রেইনে আমাদের Transformer হচ্ছে হাগিংফেইস ট্রান্সফর্মারস লাইব্রেরির একটা  অ্যাবস্ট্রাকশন লেয়ার। একে আমরা “ইনস্ট্যান্টসিয়েট” করছি - সেই মডেলের নাম এবং সিকোয়েন্স লেন্থ দিয়ে। বার্ট ভিত্তিক মডেলগুলোর সর্বোচ্চ সিকোয়েন্স লেন্থ সাধারণত ৫১২ হয়। এখানে ৫০০ টোকেনের নিচের কনটেন্টকে প্যাডিং করে দেবে। এর পাশাপাশি যেই কনটেন্টগুলো ৫০০ টোকেনের বেশি, সেগুলোকে কেটে দেবে। </p>
+<p>মনে আছে আমাদের বাংলা ট্রান্সফর্মার্স মডেলের কথা? সেটাকে নিয়ে নিচ্ছি text.Transformer দিয়ে। এখানে আলাদা করে “ক্লাস_নেম” আর্গুমেন্টকে ট্রান্সফর্মারস কনস্ট্রাকটরে পাঠানোর দরকার নেই। যদি লেবেল ‘ওয়ান-হট এনকোডিং’ হতো, তাহলে সেটার প্রয়োজন হতো। </p>
+<h3 id="_15">মডেল ফাইল (যেকোন একটা)</h3>
+<p>আমাদের এখানে বার্ট এবং ডিস্টিল-বার্ট বলে দুটো মডেলকে ব্যবহার করার চেষ্টা করেছি। বার্ট, অর্থাৎ বাইডারেশনাল এনকোডার রিপ্রেজেন্টেশন ফ্রম ট্রান্সফরমার্স, যা সরাসরি এসেছে গুগলের রিসার্চারদের কাছ থেকে। এটাতে সুবিধা হচ্ছে আমাদের জনপ্রিয় অ্যাটেনশন মডেলে টেক্সট ট্রেনিং করার সময় আগে যেভাবে আমরা বাঁ দিক থেকে ডান দিকে যেতাম, সেখানে এখন বাঁ দিক থেকে ডান দিকে এবং ডানদিক থেকে বাঁদিকে দু'ধরনের ট্রেনিং করানো সম্ভব হচ্ছে মডেলের দক্ষতা বাড়াতে। এখানে মাস্ক ইনপুট ব্যবহার করা হচ্ছে যেহেতু বাইডাইরেকশন ট্রেনিং আগে অসম্ভব ছিল। বাক্যের সিকোয়েন্স বার্ট এ ফিড করানোর আগে একটা নির্দিস্ট সংখ্যক শব্দকে মাস্ক মানে ঢেকে দেয়া হয় মাস্ক টোকেন দিয়ে - যাতে সে আসল শব্দকে প্রেডিক্ট করতে পারে। এই প্রেডিকশনটা আসে বাক্যের অন্যান্য শব্দগুলোর কন্টেক্সট থেকে - যেগুলোকে ঢেকে দেওয়া হয়নি এবং সেগুলোর সিকোয়েন্স থেকে।</p>
+<h2 id="-_1">বার্ট এবং ডিস্টিল-বার্ট</h2>
+<p>সেই বার্টকে ট্রেনিং করাতে গিয়ে যে সময় লাগে, সেখানে দক্ষতা নিয়ে এসেছে ডিস্টিল-বার্ট। আমরা দুটোই করে দেখব।</p>
+<p>এখানে গুগলের ডকুমেন্টেশন কি বলছে? </p>
+<p><code>As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), the Transformer encoder reads the entire sequence of words at once. Therefore it is considered bidirectional, though it would be more accurate to say that it’s non-directional. This characteristic allows the model to learn the context of a word based on all of its surroundings (left and right of the word).</code></p>
+<p>নামেই কাজে পরিচয়। বার্ট মডেলের পরিশুদ্ধ ভার্সন হচ্ছে এই ডিস্টিল বার্ট। আসল মডেল থেকে ৪০% প্যারামিটার কমিয়ে একে চালানো যায় প্রায় ৬০% দ্রুতগতিতে। সবচেয়ে বড় ব্যাপার হচ্ছে এতে আসল বার্ট মডেলের ৯৫% পারফরম্যান্স রাখা যায়। ডকুমেন্টেশন কি বলছে?</p>
+<p><code>The DistilBERT model is Smaller, faster, cheaper, lighter: Introducing DistilBERT, a distilled version of BERT, and the paper DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter. DistilBERT is a small, fast, cheap and light Transformer model trained by distilling BERT base. It has 40% less parameters than bert-base-uncased, runs 60% faster while preserving over 95% of BERT’s performances as measured on the GLUE language understanding benchmark.</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># MODEL_NAME = &#39;sagorsarker/bangla-bert-base&#39;</span>
+<span class="c1"># t = text.Transformer(MODEL_NAME, maxlen=500)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;neuralspace-reverie/indic-transformers-bn-distilbert&#39;</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">Transformer</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>HBox(children=(FloatProgress(value=0.0, description='Downloading', max=491.0, style=ProgressStyle(description_…
+</code></pre>
+<h3 id="-_2">ডাটাসেটের প্রি-প্রসেসিং</h3>
+<p>আমাদের ট্রেনিং এবং ভ্যালিডেশন ডেটাকে আলাদা করে প্রি-প্রসেস করতে হবে। এখানে একটু সময় লাগবে, দুই স্টেজে ৪০ মিনিট এবং ২০ মিনিট - গুগল কোলাবে জিপিইউ সেট করে। এখানে বার্ট প্রি-ট্রেইনড মডেল যেই ফরম্যাটে ট্রেনিং এবং ভ্যালিডেশন ডাটা ‘এক্সপেক্ট’ করছে - আমরা সেই ফরম্যাটেই তৈরি করে দিচ্ছি।</p>
+<div class="highlight"><pre><span></span><code><span class="n">trn</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">preprocess_train</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">preprocess_test</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>preprocessing train...
+language: bn
+train sequence lengths:
+    mean : 268
+    95percentile : 669
+    99percentile : 1079
+
+
+
+HBox(children=(FloatProgress(value=0.0, description='Downloading', max=2237676.0, style=ProgressStyle(descript…
+
+
+
+
+
+
+
+
+
+Is Multi-Label? False
+preprocessing test...
+language: bn
+test sequence lengths:
+    mean : 269
+    95percentile : 669
+    99percentile : 1075
+</code></pre>
+<h3 id="_16">তৈরি করি মডেল</h3>
+<p>আমরা এখানে একটা ক্লাসিফায়ারকে ডিফাইন করব যার মধ্যে প্রি-ট্রেইনড ওয়েট থাকবে। এর পাশাপাশি, দৈবচয়নের ভিত্তিতে শেষ লেয়ারের ওয়েটগুলোকে দেয়া হলেও সেগুলোকে ফাইন টিউন করা যাবে। </p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get_classifier</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>HBox(children=(FloatProgress(value=0.0, description='Downloading', max=975649908.0, style=ProgressStyle(descri…
+</code></pre>
+<p>আমাদের মডেল এবং ডাটাকে ঢুকিয়ে দিচ্ছি কেট্রেইনের লার্নার অবজেক্টে। এটা একটা কেট্রেইন লার্নার অবজেক্ট র্যাপার, এখানে ট্রান্সফর্মার্স লাইব্রেরির জন্য তৈরি করে নিচ্ছি। এটা আমাদেরকে সাহায্য করবে খুব তাড়াতাড়ি  মডেলকে ট্রেনিং  করাতে যাতে সে প্রেডিকশন করতে পারে নতুন ডাটার উপরে। 
+এখানে ট্রেনিং এর সময় মেমোরি বেশি ব্যবহার করলে ‘ব্যাচ সাইজ’ কমিয়ে আনতে পারেন। সেটাতে সমস্যা হলে কনটেন্টের ‘ম্যাক্সিমাম লেন্থ’ প্যারামিটার কমিয়ে আনতে পারেন আগের ধাপে।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># ট্রেনিং করে নিচ্ছি</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">ktrain</span><span class="o">.</span><span class="n">get_learner</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_data</span><span class="o">=</span><span class="n">trn</span><span class="p">,</span> <span class="n">val_data</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_17">ধাপ ২: (শুধুমাত্র দেখার জন্য) একটা ভালো লার্নিং রেট এস্টিমেট</h3>
+<p>(শুধুমাত্র, মডেলের কাজ দেখার জন্য -  বেশি সময় লাগলে এই ধাপটা বাদ দিতে পারেন)
+মডেলের একটা ভালো লার্নিং রেট দেখতে চাই আমরা সবাই। তবে, এতে সময় লাগে বেশ খানিক। </p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">learner</span><span class="o">.</span><span class="n">lr_find</span><span class="p">(</span><span class="n">show_plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>simulating training for different learning rates... this may take a few moments...
+Train for 54462 steps
+21512/54462 [==========&gt;...................] - ETA: 2:11:59 - loss: 0.5840 - accuracy: 0.8369
+
+done.
+Visually inspect loss plot and select learning rate associated with falling loss
+</code></pre>
+<p><img alt="png" src="../output_34_1.png" /></p>
+<p>এই মডেলকে ট্রেইন এবং বিল্ড করতে যে সময় লাগে, সেখানে এভাবে সেভ করে করে আগাতে পারি। না হলে এক ইপকেই ১২ ঘন্টা। গুগল কোলাবে, ১৩ জিবি জিপিইউ এর ১২ জিবি নিয়ে থাকে পুরো সময়। আর কম তো ক্র্যাশ করে না মডেলগুলো!</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># preproc = t</span>
+<span class="c1"># save model and Preprocessor instance after partially training</span>
+<span class="c1"># ktrain.get_predictor(model, preproc).save(&#39;/tmp/my_predictor&#39;)</span>
+</code></pre></div>
+<h3 id="_18">ধাপ ৩: মডেল ট্রেনিং (লম্বা সময়)</h3>
+<p>এখানে একটু পড়ে নেয়া যায়। গুগলের রিসার্চ পেপার অনুযায়ী, ‘বার্ট’ বেসড মডেলের জন্য অর্থাৎ ট্রান্সফর্মার ভিত্তিক মডেলগুলো ভাল কাজ করে যখন লার্নিং রেট 2e-5 এবং 5e-5 এর মধ্যে থাকে। তবে আমরা নিচে সেই লার্নিং রেট ফাইন্ডার দিয়ে দেখবো গুগলের সাথে আমাদের ফাইন্ডিং প্রায় কাছাকাছি যায়।  এখানে দুই পক্ষের কথা বলছি।  এর বেশি গেলে কয়েক তার পিসির সামনে বসে থাকতে হবে। সত্যি বলছি। এই বই লেখতে যে কতো রাত নষ্ট হয়েছে আমার তবে, এগুলো নষ্ট নয়, বরং ইনভেস্টমেন্ট।</p>
+<p>আমাদের ট্রেনিংয়ের জন্য এখানে “ফিট ওয়ান সাইকেল” (https://arxiv.org/abs/1803.09820) মেথড ব্যবহার করব কেট্রেইনে যা এই রিসার্চ পেপারকে ইমপ্লিমেন্ট করছে। এটার ধারণা সবচেয়ে আগে দিয়েছেন লেসলি স্মিথ। </p>
+<p>লার্নিং রেট শুরুতে একটা বড় সময় নেয় শেখার জন্য, যেটা আস্তে আস্তে কমে অর্থাৎ “ডিকে পিরিয়ড” আসতে থাকে শেষের দিকে। ট্রান্সফরমার্স বেইজড মডেলের জন্য এটা ভালোভাবে কাজ করে।</p>
+<p>দুটো ইপক নেই। গুগল কোলাবে ১২ x ২ অর্থাৎ ২৪ ঘন্টা! তবে নিজের জিপিইউ থাকলে চারটা ইপক সাইকেল নিতে পারেন ভালো অ্যাকুরেসি পাবার জন্য। </p>
+<div class="highlight"><pre><span></span><code><span class="n">learner</span><span class="o">.</span><span class="n">fit_onecycle</span><span class="p">(</span><span class="mf">8e-5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>begin training using onecycle policy with max lr of 8e-05...
+Train for 54463 steps, validate for 2553 steps
+Epoch 1/2
+54463/54463 [==============================] - 14072s 258ms/step - loss: 0.2056 - accuracy: 0.9349 - val_loss: 0.2718 - val_accuracy: 0.9184
+Epoch 2/2
+54463/54463 [==============================] - 14112s 259ms/step - loss: 0.2209 - accuracy: 0.9332 - val_loss: 0.1923 - val_accuracy: 0.9389
+
+
+
+
+
+&lt;tensorflow.python.keras.callbacks.History at 0x7f48e999d278&gt;
+</code></pre>
+<h3 id="_19">ধাপ ৪: মডেল ইভ্যালুয়েশন, কেমন করছে মডেল?</h3>
+<p>এই অংশটুকু আপনাদের ওপর ছেড়ে দিলাম। আমাদের মডেলের কনফিউশন মাট্রিক্সটা একটু দেখি।  সবগুলো ক্লাসকে ভিত্তি করে এই কনফিউশন মাট্রিক্সটা তৈরি করা যায়। এখানে precision, recall, f1-score, এবং supportকে আলাদাভাবে দেখার জন্য কী করা যায়? নোটবুক আগেই দেখবেন না।</p>
+<div class="highlight"><pre><span></span><code><span class="n">learner</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">val_data</span><span class="o">=</span><span class="p">(</span><span class="n">X_t</span>
+<span class="n">est</span><span class="p">,</span> <span class="n">y_test</span><span class="p">),</span> <span class="n">class_names</span><span class="o">=</span><span class="n">y_train</span><span class="o">.</span><span class="n">target_names</span><span class="o">....</span><span class="p">)</span> <span class="c1"># কী হতে পারে এখানে?</span>
+</code></pre></div>
+<p>এর পাশাপাশি, আপনাদের বের করতে হবে, যেই ক্লাসটাতে আমরা সবচেয়ে বেশি খারাপ করেছি। নোটবুক দেখুন।</p>
+<div class="highlight"><pre><span></span><code><span class="n">learner</span><span class="o">.</span><span class="n">view_top_losses</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">preproc</span><span class="o">=</span><span class="n">t</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="_20">ধাপ ৫: নতুন এনভায়রনমেন্টে মডেলের প্রেডিকশন</h3>
+<p>এখন আসি প্রেডিকশনে। preproc=t অর্থ হচ্ছে text.Transformer এর আউটপুট। এটা আমাদের প্রিপ্রসেসিং (যেমন., preproc = text.Transformer('bert-base’) হতে পারে। এখানে প্রেডিক্টর অবজেক্টকে ‘ইনস্ট্যান্টশিয়েট’ করছি যাতে নতুন ডাটা সে প্রেডিক্ট করতে পারে। </p>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span> <span class="o">=</span> <span class="n">ktrain</span><span class="o">.</span><span class="n">get_predictor</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">preproc</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+</code></pre></div>
+<p>গুগল কোলাবে ট্রেনিং করতে গেলে আমাদের মডেলটা কোলাবের ভার্চুয়াল মেশিনেই থেকে যায়। ফলে এটাকে আমাদের গুগল ড্রাইভে সেভ করে রাখা বুদ্ধিমানের কাজ। </p>
+<p>মাউন্ট করে নেই আমাদের ড্রাইভ। এখানে একটা অথেনটিকেশন লিংক ব্যবহার করে আমাদেরকে কানেক্ট করে নিতে হবে।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Mount your google drive in google colab</span>
+<span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>Mounted at /content/drive
+</code></pre>
+<h2 id="_21">গুগল ড্রাইভে মডেল সেভ</h2>
+<p>মডেলকে সেভ করে নিচ্ছি দুটো ফরম্যাটে। প্রথমটা কেট্রেইন, যেটা কেরাস স্টাইল, পরেরটা ট্রান্সফরমার্স স্টাইল। যখন যেটা লাগে। </p>
+<p>লিংক দেখে বুঝেছেন, মডেলকে আমরা সেভ করছি গুগল ড্রাইভে। তবে শুরুতে গুগল ড্রাইভকে মাউন্ট করে সব ডিরেক্টরি দেখতে পারেন।</p>
+<p>আমাদের প্রেডিক্টরকে সেভ করে রাখা দরকার - বিশেষ করে বড় ডাটাসেটগুলোর ট্রেনিংয়ের সময় অনেক বেশি লাগছে। আমাদের মডেল এবং প্রি-প্রসেসরের ইনস্ট্যান্স সেভ করে রাখা দরকার ‘পার্শিয়াল’ ট্রেনিংয়ের পরে।</p>
+<p>প্রথমটা কেট্রেইন, এটা দিয়েও মডেল সেভ করতে পারেন। এটা আমাদের জানা দরকার।</p>
+<p>পরেরটা ট্রান্সফরমার্স। যেটা পরে লাগতে পারে।</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># টেন্সরফ্লোতে কিভাবে মডেল সেভ করি?</span>
+<span class="c1"># model.save(&#39;/content/gdrive/My Drive/Colab Notebooks/saved_model/my_model&#39;)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># কেট্রেইন দিয়ে সেভ করা</span>
+<span class="n">predictor</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor_kt&#39;</span><span class="p">)</span>
+<span class="c1"># ট্রান্সফরমার্স এপিআই দিয়ে সেভ করি</span>
+<span class="n">learner</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>মডেল দুটো দেখে নেই আমাদের গুগল ড্রাইভে। একটাতে তিনটা আরেকটাতে দুটো ফাইল।</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">alh</span> <span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor_kt&#39;</span>
+</code></pre></div>
+<pre><code>total 628M
+-rw------- 1 root root  902 Dec 15 10:17 config.json
+-rw------- 1 root root 628M Dec 15 10:17 tf_model.h5
+-rw------- 1 root root 3.0K Dec 15 10:17 tf_model.preproc
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">ahl</span> <span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor&#39;</span>
+</code></pre></div>
+<pre><code>total 628M
+-rw------- 1 root root  902 Dec 15 10:17 config.json
+-rw------- 1 root root 628M Dec 15 10:17 tf_model.h5
+</code></pre>
+<h2 id="_22">মডেলের সামারি</h2>
+<p>এখানে কয়টা লেয়ার দেখছেন?</p>
+<div class="highlight"><pre><span></span><code><span class="n">learner</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>Model: "tf_bert_for_sequence_classification"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+bert (TFBertMainLayer)       multiple                  164396544 
+_________________________________________________________________
+dropout_37 (Dropout)         multiple                  0         
+_________________________________________________________________
+classifier (Dense)           multiple                  6921      
+=================================================================
+Total params: 164,403,465
+Trainable params: 164,403,465
+Non-trainable params: 0
+_________________________________________________________________
+</code></pre>
+<p>শুরু হলো আমাদের প্রেডিকশন। কেমন মনে হচ্ছে? আগের এলএসটিএম মডেলের কাছে? আমার ধারণা, ট্রান্সফরমার্স মডেল ভালো কাজ করছে।</p>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;বাংলাদেশে নদ-নদীগুলো ছড়িয়ে আছে জালের মতো। ঐতিহাসিকভাবেই এই অঞ্চলের নদ-নদীর গতি–প্রকৃতি ও প্রবাহ জটিল।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>'opinion'
+</code></pre>
+<h2 id="_23">মডেলের প্রেডিকশন এবং তার এক্সপ্লেনেশন</h2>
+<p>আমাদের প্রেডিক্টরের কাছে কন্ট্রিবিউশন এবং ফিচারের  ধারণা চাচ্ছি। সেটাই ‘এক্সপ্লেইন’ এখানে। বেশ ভালো রেসপন্স। এখানে আমরা এলি৫ এবং লাইম লাইব্রেরি ব্যবহার করেছি পুরো ব্যাপারটাকে আরও গুছিয়ে আনার জন্য। আমাদের এ ধরনের অনেক কাজ আসছে সামনে। ‘নেমড এনটিটি রিকগনিশন’ নিয়ে কথা বলবো ভিডিওতে। হাগিংফেসের সাইটে ‘এনটিটি রিকগনিশন’ নিয়ে বেশি কিছু এপিআই আছে - যা দিয়ে শুরু করতে পারেন। এখানে হাইলাইট শব্দগুলো মানে হচ্ছে - এই পুরো ব্যাপারটা তারা মেনে নিচ্ছে ক্লাসের ইনটুইশনের সাথে। </p>
+<p>তবে প্রেডিক্টরের ‘এক্সপ্লেইন’ ব্যাপারটাকে ঠিক মতো কাজ করানোর জন্য আমাদেরকে এলি৫ এর আগে দেখানো ফর্কড ভার্সনটা ব্যবহার করা যেতে পারে।  </p>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="s1">&#39;বাংলাদেশে নদ-নদীগুলো ছড়িয়ে আছে জালের মতো। ঐতিহাসিকভাবেই এই অঞ্চলের নদ-নদীর গতি–প্রকৃতি ও প্রবাহ জটিল।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>&lt;style&gt;
+table.eli5-weights tr:hover {
+    filter: brightness(85%);
+}
+</code></pre>
+</style>
+<pre><code>    &lt;p style="margin-bottom: 0.5em; margin-top: 0em"&gt;
+        &lt;b&gt;
+
+    y=opinion
+</code></pre>
+<p></b></p>
+<pre><code>(probability &lt;b&gt;0.619&lt;/b&gt;, score &lt;b&gt;0.679&lt;/b&gt;)
+</code></pre>
+<p>top features
+        </p></p>
+<pre><code>&lt;table class="eli5-weights"
+       style="border-collapse: collapse; border: none; margin-top: 0em; table-layout: auto; margin-bottom: 2em;"&gt;
+    &lt;thead&gt;
+    &lt;tr style="border: none;"&gt;
+
+            &lt;th style="padding: 0 1em 0 0.5em; text-align: right; border: none;" title="Feature contribution already accounts for the feature value (for linear models, contribution = weight * feature value), and the sum of feature contributions is equal to the score or, for some classifiers, to the probability. Feature values are shown if &amp;quot;show_feature_values&amp;quot; is True."&gt;
+                Contribution&lt;sup&gt;?&lt;/sup&gt;
+            &lt;/th&gt;
+
+        &lt;th style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;Feature&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+
+        &lt;tr style="background-color: hsl(120, 100.00%, 80.00%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    +1.455
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    Highlighted in text (sum)
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>        &lt;tr style="background-color: hsl(0, 100.00%, 87.12%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    -0.776
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    &amp;lt;BIAS&amp;gt;
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>    &lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+&lt;p style="margin-bottom: 2.5em; margin-top:-0.5em;"&gt;
+    &lt;span style="background-color: hsl(120, 100.00%, 84.76%); opacity: 0.85" title="0.376"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;াং&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 74.29%); opacity: 0.91" title="0.794"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 67.92%); opacity: 0.95" title="1.089"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 72.78%); opacity: 0.92" title="0.861"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.31%); opacity: 0.86" title="0.465"&gt;নদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.22%); opacity: 0.85" title="0.395"&gt;নদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.02%); opacity: 0.81" title="0.099"&gt;গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.50%); opacity: 0.83" title="0.252"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 81.85%); opacity: 0.86" title="-0.483"&gt;ছড়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.38%); opacity: 0.81" title="-0.048"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 61.79%); opacity: 0.99" title="-1.398"&gt;আছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.144"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.96%); opacity: 0.81" title="0.077"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.71%); opacity: 0.83" title="-0.245"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.82%); opacity: 0.86" title="0.446"&gt;মত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো। &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 72.75%); opacity: 0.92" title="0.863"&gt;ঐত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 60.00%); opacity: 1.00" title="1.493"&gt;হ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 69.87%); opacity: 0.93" title="0.996"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.14%); opacity: 0.83" title="0.202"&gt;কভ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.30%); opacity: 0.81" title="-0.092"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 74.39%); opacity: 0.91" title="0.790"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.19%); opacity: 0.86" title="0.433"&gt;এই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.02%); opacity: 0.81" title="0.055"&gt;অঞ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.45%); opacity: 0.82" title="0.138"&gt;চল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.91%); opacity: 0.82" title="0.152"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.78%); opacity: 0.86" title="0.411"&gt;নদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.00%); opacity: 0.85" title="0.368"&gt;নদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.64%); opacity: 0.81" title="-0.108"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.59%); opacity: 0.83" title="0.218"&gt;গত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি–&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.05%); opacity: 0.80" title="0.036"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.99%); opacity: 0.84" title="-0.300"&gt;রক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৃ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.96%); opacity: 0.84" title="-0.335"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.15%); opacity: 0.80" title="-0.006"&gt;ও&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.20%); opacity: 0.80" title="0.018"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.58%); opacity: 0.86" title="0.455"&gt;রব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.75%); opacity: 0.82" title="0.157"&gt;হ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.70%); opacity: 0.81" title="0.083"&gt;জট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.30%); opacity: 0.80" title="0.016"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;।&lt;/span&gt;
+&lt;/p&gt;
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;বাংলাদেশ টেলিভিশনে গান হয়, সংস্কৃতিকে তুলে ধরতে হবে আমাদের।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>'entertainment'
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="s1">&#39;বাংলাদেশে টেলিভিশনে গান হয়, সংস্কৃতিকে তুলে ধরতে হবে আমাদের।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>array([0.02280626, 0.0014308 , 0.00193409, 0.94940805, 0.01303796,
+       0.0046582 , 0.003165  , 0.00179799, 0.00176161], dtype=float32)
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s1">&#39;বাংলাদেশে ফুটবল খুব বেশি খেলা হয়, ক্রিকেট কম নয়।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>'opinion'
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="s1">&#39;শিক্ষা মন্ত্রণালয়ে এমন প্রস্তাব দিয়েছে ছাত্রছাত্রীদের বই বিতরণ করার জন্য সব শিক্ষাপ্রতিষ্ঠান এবং বিদ্যালয়গুলোকে দিকনির্দেশনা দেওয়া হবে।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>&lt;style&gt;
+table.eli5-weights tr:hover {
+    filter: brightness(85%);
+}
+</code></pre>
+</style>
+<pre><code>    &lt;p style="margin-bottom: 0.5em; margin-top: 0em"&gt;
+        &lt;b&gt;
+
+    y=bangladesh
+</code></pre>
+<p></b></p>
+<pre><code>(probability &lt;b&gt;0.384&lt;/b&gt;, score &lt;b&gt;0.053&lt;/b&gt;)
+</code></pre>
+<p>top features
+        </p></p>
+<pre><code>&lt;table class="eli5-weights"
+       style="border-collapse: collapse; border: none; margin-top: 0em; table-layout: auto; margin-bottom: 2em;"&gt;
+    &lt;thead&gt;
+    &lt;tr style="border: none;"&gt;
+
+            &lt;th style="padding: 0 1em 0 0.5em; text-align: right; border: none;" title="Feature contribution already accounts for the feature value (for linear models, contribution = weight * feature value), and the sum of feature contributions is equal to the score or, for some classifiers, to the probability. Feature values are shown if &amp;quot;show_feature_values&amp;quot; is True."&gt;
+                Contribution&lt;sup&gt;?&lt;/sup&gt;
+            &lt;/th&gt;
+
+        &lt;th style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;Feature&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+
+        &lt;tr style="background-color: hsl(120, 100.00%, 80.00%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    +0.455
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    Highlighted in text (sum)
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>        &lt;tr style="background-color: hsl(0, 100.00%, 81.67%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    -0.402
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    &amp;lt;BIAS&amp;gt;
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>    &lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+&lt;p style="margin-bottom: 2.5em; margin-top:-0.5em;"&gt;
+    &lt;span style="background-color: hsl(0, 100.00%, 80.11%); opacity: 0.87" title="-0.291"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 81.12%); opacity: 0.87" title="-0.270"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.22%); opacity: 0.84" title="0.172"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 73.40%); opacity: 0.91" title="0.440"&gt;মন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.31%); opacity: 0.80" title="-0.009"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 81.96%); opacity: 0.86" title="0.253"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.32%); opacity: 0.81" title="0.048"&gt;লয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.13%); opacity: 0.84" title="0.174"&gt;এমন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.04%); opacity: 0.81" title="-0.052"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 73.85%); opacity: 0.91" title="0.430"&gt;রস&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.50%); opacity: 0.81" title="0.035"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.28%); opacity: 0.84" title="0.154"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.14%); opacity: 0.80" title="-0.018"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.71%); opacity: 0.81" title="0.022"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 81.08%); opacity: 0.87" title="0.271"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 77.03%); opacity: 0.89" title="0.357"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.29%); opacity: 0.83" title="0.104"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.20%); opacity: 0.83" title="-0.138"&gt;রছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 68.40%); opacity: 0.94" title="-0.563"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.58%); opacity: 0.85" title="-0.202"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.41%); opacity: 0.81" title="0.036"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.19%); opacity: 0.82" title="0.076"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.41%); opacity: 0.86" title="0.244"&gt;বই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.15%); opacity: 0.86" title="0.249"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.88%); opacity: 0.85" title="0.178"&gt;তরণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.55%); opacity: 0.84" title="-0.149"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 74.98%); opacity: 0.90" title="-0.403"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 60.00%); opacity: 1.00" title="0.788"&gt;জন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.41%); opacity: 0.83" title="-0.102"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.14%); opacity: 0.81" title="-0.039"&gt;সব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.04%); opacity: 0.84" title="-0.140"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 81.12%); opacity: 0.87" title="-0.270"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.55%); opacity: 0.83" title="0.116"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.53%); opacity: 0.80" title="-0.007"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.14%); opacity: 0.82" title="-0.064"&gt;রত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.76%); opacity: 0.81" title="0.032"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.64%); opacity: 0.83" title="-0.114"&gt;ঠ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.58%); opacity: 0.85" title="0.202"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.38%); opacity: 0.82" title="0.060"&gt;এব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ং &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.39%); opacity: 0.83" title="0.135"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.98%); opacity: 0.82" title="0.079"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.16%); opacity: 0.81" title="-0.050"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.75%); opacity: 0.84" title="0.163"&gt;লয়গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 83.89%); opacity: 0.85" title="-0.215"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.61%); opacity: 0.84" title="-0.148"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.00%); opacity: 0.84" title="-0.141"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.15%); opacity: 0.80" title="0.018"&gt;কন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.73%); opacity: 0.82" title="0.069"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.66%); opacity: 0.83" title="0.114"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.62%); opacity: 0.86" title="0.240"&gt;শন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.75%); opacity: 0.84" title="0.145"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.03%); opacity: 0.80" title="-0.004"&gt;ওয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 82.81%); opacity: 0.86" title="-0.236"&gt;হব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে।&lt;/span&gt;
+&lt;/p&gt;
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">ls</span> <span class="o">-</span><span class="n">alh</span> <span class="s1">&#39;/content/gdrive/My Drive/Colab Notebooks/saved_model/bangla_news_predictor_kt&#39;</span>
+</code></pre></div>
+<pre><code>ls: cannot access '/content/gdrive/My Drive/Colab Notebooks/saved_model/bangla_news_predictor_kt': No such file or directory
+</code></pre>
+<p>ট্রান্সফর্মারস দিয়ে আবার ‘রিলোড’ করে দেখতে পারেন। আমাদের সবদিক দিয়ে জেনে আগাতে হবে।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TFAutoModelForSequenceClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</code></pre></div>
+<p>কেট্রেইন দিয়েও রিলোড করে দেখি তাহলে।</p>
+<div class="highlight"><pre><span></span><code><span class="n">reloaded_predictor</span> <span class="o">=</span> <span class="n">ktrain</span><span class="o">.</span><span class="n">load_predictor</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor_kt&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>রিলোডের পর আবার প্রবাবিলিস্টিক প্রেডিকশন দেখি। এর অর্থ হচ্ছে, কাজ চলছে। মডেলকে নতুন করে রিলোড করে চলছে। তবে, পুরো মডেলকে সেভ করে রাখবেন গুগল ড্রাইভে, স্পেস থাকলে। আমার ধারণা এটা ৭০০ মেগাবাইট হতে পারে সর্বোচ্চ।</p>
+<div class="highlight"><pre><span></span><code><span class="n">reloaded_predictor</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="s1">&#39;বঙ্গবন্ধু টি–টোয়েন্টি কাপে কাল জেমকন খুলনার হয়ে খেলার ম্যাচে ৪ ওভারে ২৮ রানে ১ উইকেট নেন মাশরাফি বিন মুর্তজা।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>array([3.5018922e-04, 4.5625397e-04, 1.3120747e-04, 1.1196788e-03,
+       7.3227519e-04, 6.0426974e-04, 2.4903766e-04, 9.9611712e-01,
+       2.4014582e-04], dtype=float32)
+</code></pre>
+<p>আমাদের ক্লাসগুলো আবারো দেখি। আপনাদের কি মনে হচ্ছে এই ট্রান্সফর্মারস মডেলের ব্যাপারে? অসাধারণ তাই না?</p>
+<div class="highlight"><pre><span></span><code><span class="n">reloaded_predictor</span><span class="o">.</span><span class="n">get_classes</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>['bangladesh',
+ 'economy',
+ 'education',
+ 'entertainment',
+ 'international',
+ 'life-style',
+ 'opinion',
+ 'sports',
+ 'technology']
+</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">predictor</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="s1">&#39;ডিজিটাল বাংলাদেশ গড়ার পরিকল্পনার অংশ হিসাবে ই-কমার্সে দক্ষ জনবল বৃদ্ধি ও কর্মসংস্থান সৃষ্টি করার লক্ষ্যে বাণিজ্য মন্ত্রণালয়ের ‘ই-বাণিজ্য করবো নিজের ব্যবসা গড়বো’ প্রকল্পের আওতায় দেশব্যাপী ই-কমার্স বিষয়ক প্রশিক্ষণ পরিচালিত হচ্ছে। চতুর্থ শিল্প বিপ্লবের চ্যালেঞ্জ মোকাবেলায় ই-কমার্সে দক্ষ জনবল আমাদের অর্থনীতির চাকাকে সচল রাখবে। ডিজিটাল কমার্সকে শক্তিশালী করার জন্য তৈরিকৃত ‘বাংলাদেশ ডিজিটাল কমার্স পলিসি ২০১৮’ এর আওতায় বাণিজ্য মন্ত্রণালয় ই-কমার্স প্রতিষ্ঠানসমূহকে নীতিসহায়তা প্রদান অব্যাহত রেখেছে।বাণিজ্যমন্ত্রণালয় বলছে, বর্তমান পরিস্থিতিতে ই-কমার্সের গুরুত্ব অপরিসীম। সামাজিক দূরত্ব বজায় রেখে সাধারন মানুষের নিকট ওষুধ ও অন্যান্য অত্যাবশ্যকীয় পণ্য পৌছে দেয়ার দায়িত্ব পালন করছে ই-কমার্স। বাণিজ্য মন্ত্রণালয়ের প্রত্যক্ষ উদ্যোগে ই-কমার্স অ্যাসোসিয়েশনের সহযোগিতায় এ বছর আম মৌসুমে অন-লাইন আম মেলার আয়োজন করা হয়েছিল এবং এই কর্মসূচি বহুল প্রশংসিত হয়েছিল। বর্তমানে ই-কমার্সের মাধ্যমে ভোক্তাসাধারণের মধ্যে ন্যায্যমূল্যে টিসিবির পেয়াজ বিক্রয় কার্যক্রম সফলভাবে চলমান রয়েছে। ভবিষ্যতে এর পরিধি বাড়ানোর পরিকল্পনা ইতোমধ্যে গ্রহণ করা হয়েছে।&#39;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>&lt;style&gt;
+table.eli5-weights tr:hover {
+    filter: brightness(85%);
+}
+</code></pre>
+</style>
+<pre><code>    &lt;p style="margin-bottom: 0.5em; margin-top: 0em"&gt;
+        &lt;b&gt;
+
+    y=technology
+</code></pre>
+<p></b></p>
+<pre><code>(probability &lt;b&gt;0.268&lt;/b&gt;, score &lt;b&gt;-0.758&lt;/b&gt;)
+</code></pre>
+<p>top features
+        </p></p>
+<pre><code>&lt;table class="eli5-weights"
+       style="border-collapse: collapse; border: none; margin-top: 0em; table-layout: auto; margin-bottom: 2em;"&gt;
+    &lt;thead&gt;
+    &lt;tr style="border: none;"&gt;
+
+            &lt;th style="padding: 0 1em 0 0.5em; text-align: right; border: none;" title="Feature contribution already accounts for the feature value (for linear models, contribution = weight * feature value), and the sum of feature contributions is equal to the score or, for some classifiers, to the probability. Feature values are shown if &amp;quot;show_feature_values&amp;quot; is True."&gt;
+                Contribution&lt;sup&gt;?&lt;/sup&gt;
+            &lt;/th&gt;
+
+        &lt;th style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;Feature&lt;/th&gt;
+
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+
+
+
+
+
+        &lt;tr style="background-color: hsl(0, 100.00%, 91.59%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    -0.170
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    Highlighted in text (sum)
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>        &lt;tr style="background-color: hsl(0, 100.00%, 80.00%); border: none;"&gt;
+&lt;td style="padding: 0 1em 0 0.5em; text-align: right; border: none;"&gt;
+    -0.587
+&lt;/td&gt;
+&lt;td style="padding: 0 0.5em 0 0.5em; text-align: left; border: none;"&gt;
+    &amp;lt;BIAS&amp;gt;
+&lt;/td&gt;
+</code></pre>
+</tr>
+<pre><code>    &lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+
+
+&lt;p style="margin-bottom: 2.5em; margin-top:-0.5em;"&gt;
+    &lt;span style="background-color: hsl(120, 100.00%, 68.97%); opacity: 0.94" title="0.730"&gt;ড&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 66.70%); opacity: 0.95" title="0.808"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 63.50%); opacity: 0.98" title="0.921"&gt;ট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.04%); opacity: 0.85" title="0.258"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.51%); opacity: 0.80" title="0.010"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;াং&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.88%); opacity: 0.83" title="-0.169"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.08%); opacity: 0.80" title="0.014"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.32%); opacity: 0.85" title="0.251"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.69%); opacity: 0.82" title="0.093"&gt;গড়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.88%); opacity: 0.81" title="0.056"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.29%); opacity: 0.84" title="0.204"&gt;পর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.37%); opacity: 0.85" title="-0.274"&gt;কল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.38%); opacity: 0.81" title="0.064"&gt;পন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.96%); opacity: 0.81" title="-0.026"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.44%); opacity: 0.80" title="-0.021"&gt;অ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ং&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.47%); opacity: 0.81" title="0.047"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.13%); opacity: 0.84" title="-0.208"&gt;হ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.95%); opacity: 0.81" title="0.040"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.30%); opacity: 0.82" title="-0.119"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.82%); opacity: 0.82" title="-0.090"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.43%); opacity: 0.80" title="-0.010"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে দক্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.52%); opacity: 0.83" title="0.176"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 77.06%); opacity: 0.89" title="-0.474"&gt;জনবল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 81.47%); opacity: 0.87" title="-0.350"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৃ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.51%); opacity: 0.82" title="-0.115"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.16%); opacity: 0.84" title="0.207"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.60%); opacity: 0.84" title="0.220"&gt;ও&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.28%); opacity: 0.83" title="0.160"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্মসংস্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.73%); opacity: 0.81" title="-0.029"&gt;থ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.44%); opacity: 0.82" title="-0.079"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.98%); opacity: 0.80" title="-0.015"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৃ&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.42%); opacity: 0.81" title="0.033"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.33%); opacity: 0.82" title="0.081"&gt;ট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.72%); opacity: 0.86" title="0.291"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.89%); opacity: 0.82" title="0.089"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.04%); opacity: 0.81" title="-0.053"&gt;লক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.22%); opacity: 0.85" title="-0.253"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.17%); opacity: 0.84" title="-0.184"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.56%); opacity: 0.84" title="-0.198"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.00%); opacity: 0.80" title="-0.005"&gt;ণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.59%); opacity: 0.82" title="-0.113"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.37%); opacity: 0.82" title="-0.081"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.45%); opacity: 0.83" title="0.136"&gt;মন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.24%); opacity: 0.81" title="0.066"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.61%); opacity: 0.82" title="-0.113"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.05%); opacity: 0.80" title="-0.014"&gt;লয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.50%); opacity: 0.83" title="-0.135"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; ‘&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.91%); opacity: 0.81" title="-0.027"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.66%); opacity: 0.81" title="-0.075"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.00%); opacity: 0.80" title="-0.005"&gt;ণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.59%); opacity: 0.82" title="-0.113"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.81%); opacity: 0.81" title="0.028"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.42%); opacity: 0.85" title="0.248"&gt;করব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.83%); opacity: 0.81" title="-0.028"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.75%); opacity: 0.80" title="-0.017"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.35%); opacity: 0.82" title="0.081"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.71%); opacity: 0.83" title="0.151"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.56%); opacity: 0.82" title="-0.114"&gt;যবস&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.77%); opacity: 0.81" title="-0.074"&gt;গড়ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো’ &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.37%); opacity: 0.80" title="-0.011"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.81%); opacity: 0.85" title="-0.239"&gt;রকল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.87%); opacity: 0.82" title="-0.108"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.72%); opacity: 0.81" title="-0.043"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.44%); opacity: 0.81" title="-0.047"&gt;আওত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.02%); opacity: 0.81" title="-0.039"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.65%); opacity: 0.83" title="-0.174"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.72%); opacity: 0.84" title="0.194"&gt;শব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.44%); opacity: 0.84" title="0.224"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.12%); opacity: 0.80" title="0.024"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.11%); opacity: 0.80" title="0.013"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.71%); opacity: 0.81" title="0.030"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.73%); opacity: 0.80" title="-0.008"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.89%); opacity: 0.85" title="0.286"&gt;ষয়ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.91%); opacity: 0.81" title="-0.071"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.78%); opacity: 0.80" title="-0.007"&gt;রশ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.42%); opacity: 0.81" title="-0.048"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.37%); opacity: 0.83" title="-0.158"&gt;ষণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.77%); opacity: 0.84" title="-0.193"&gt;পর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.78%); opacity: 0.80" title="0.017"&gt;চ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.98%); opacity: 0.84" title="0.211"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.05%); opacity: 0.82" title="-0.086"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.68%); opacity: 0.81" title="-0.030"&gt;হচ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.98%); opacity: 0.82" title="-0.087"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে। &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.79%); opacity: 0.81" title="0.042"&gt;চত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.79%); opacity: 0.85" title="0.239"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.52%); opacity: 0.81" title="0.032"&gt;থ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.83%); opacity: 0.81" title="-0.056"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.06%); opacity: 0.82" title="-0.123"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.29%); opacity: 0.81" title="0.065"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.36%); opacity: 0.81" title="-0.048"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.55%); opacity: 0.81" title="0.046"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.62%); opacity: 0.81" title="0.031"&gt;লব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.02%); opacity: 0.81" title="-0.039"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.09%); opacity: 0.81" title="-0.068"&gt;চ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.14%); opacity: 0.86" title="0.332"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.19%); opacity: 0.85" title="0.254"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;েঞ্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.93%); opacity: 0.81" title="0.040"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.18%); opacity: 0.82" title="0.084"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.95%); opacity: 0.82" title="-0.088"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.80%); opacity: 0.82" title="-0.109"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.63%); opacity: 0.81" title="0.076"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 79.93%); opacity: 0.87" title="0.392"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.59%); opacity: 0.84" title="0.197"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.43%); opacity: 0.80" title="-0.010"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে দক্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.52%); opacity: 0.83" title="0.176"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.02%); opacity: 0.80" title="-0.026"&gt;জনবল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.63%); opacity: 0.85" title="0.268"&gt;আম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.75%); opacity: 0.82" title="-0.130"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.56%); opacity: 0.83" title="-0.154"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.52%); opacity: 0.82" title="-0.096"&gt;অর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.36%); opacity: 0.82" title="-0.081"&gt;থন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.31%); opacity: 0.83" title="0.159"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.60%); opacity: 0.80" title="-0.019"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.15%); opacity: 0.82" title="0.122"&gt;চ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.59%); opacity: 0.82" title="0.094"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.81%); opacity: 0.84" title="0.215"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.28%); opacity: 0.85" title="0.276"&gt;সচল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.55%); opacity: 0.81" title="-0.046"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 82.61%); opacity: 0.86" title="0.319"&gt;খব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে। &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 60.00%); opacity: 1.00" title="1.049"&gt;ড&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 66.70%); opacity: 0.95" title="0.808"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 63.50%); opacity: 0.98" title="0.921"&gt;ট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 81.06%); opacity: 0.87" title="0.361"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.77%); opacity: 0.84" title="0.216"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.63%); opacity: 0.81" title="-0.076"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.61%); opacity: 0.83" title="-0.132"&gt;সক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 82.05%); opacity: 0.86" title="-0.334"&gt;শক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 83.47%); opacity: 0.86" title="-0.297"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.83%); opacity: 0.81" title="-0.056"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.28%); opacity: 0.85" title="-0.252"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.47%); opacity: 0.85" title="0.272"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.05%); opacity: 0.83" title="0.144"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.46%); opacity: 0.84" title="-0.223"&gt;জন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.16%); opacity: 0.81" title="-0.067"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.54%); opacity: 0.83" title="0.134"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৈ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.60%); opacity: 0.80" title="-0.019"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.90%); opacity: 0.81" title="-0.027"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৃ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.55%); opacity: 0.82" title="-0.095"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; ‘&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.89%); opacity: 0.82" title="-0.107"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;াং&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.88%); opacity: 0.83" title="-0.169"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.08%); opacity: 0.80" title="0.014"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.08%); opacity: 0.86" title="0.307"&gt;শ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 67.31%); opacity: 0.95" title="0.787"&gt;ড&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 66.70%); opacity: 0.95" title="0.808"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 63.50%); opacity: 0.98" title="0.921"&gt;ট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 81.06%); opacity: 0.87" title="0.361"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.77%); opacity: 0.84" title="0.216"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.97%); opacity: 0.81" title="0.070"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.84%); opacity: 0.83" title="-0.169"&gt;পল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 82.58%); opacity: 0.86" title="-0.320"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি ২০১৮’ &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.87%); opacity: 0.82" title="-0.089"&gt;এর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.18%); opacity: 0.82" title="-0.084"&gt;আওত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.77%); opacity: 0.81" title="0.074"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 99.04%); opacity: 0.80" title="0.005"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.00%); opacity: 0.80" title="-0.005"&gt;ণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.59%); opacity: 0.82" title="-0.113"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.37%); opacity: 0.82" title="-0.081"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.45%); opacity: 0.83" title="0.136"&gt;মন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.24%); opacity: 0.81" title="0.066"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.61%); opacity: 0.82" title="-0.113"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.05%); opacity: 0.80" title="-0.014"&gt;লয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.46%); opacity: 0.80" title="-0.010"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.53%); opacity: 0.83" title="0.134"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.98%); opacity: 0.83" title="0.145"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.10%); opacity: 0.81" title="0.068"&gt;রত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.90%); opacity: 0.81" title="-0.072"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.94%); opacity: 0.81" title="-0.055"&gt;ঠ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.97%); opacity: 0.82" title="0.088"&gt;নসম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ূ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.55%); opacity: 0.83" title="-0.134"&gt;হক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.40%); opacity: 0.83" title="-0.137"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.14%); opacity: 0.82" title="-0.085"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.35%); opacity: 0.83" title="0.180"&gt;সহ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.44%); opacity: 0.81" title="0.063"&gt;য়ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.59%); opacity: 0.81" title="-0.031"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.41%); opacity: 0.81" title="-0.048"&gt;রদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.43%); opacity: 0.82" title="0.097"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.51%); opacity: 0.81" title="-0.078"&gt;অব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.69%); opacity: 0.81" title="-0.030"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.06%); opacity: 0.82" title="-0.104"&gt;হত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.07%); opacity: 0.85" title="-0.257"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.02%); opacity: 0.80" title="0.014"&gt;খ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.23%); opacity: 0.81" title="0.066"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে।&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.28%); opacity: 0.80" title="-0.023"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.00%); opacity: 0.80" title="-0.005"&gt;ণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.59%); opacity: 0.82" title="-0.113"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.27%); opacity: 0.82" title="-0.082"&gt;যমন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.77%); opacity: 0.81" title="-0.074"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.61%); opacity: 0.82" title="-0.113"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.23%); opacity: 0.83" title="0.161"&gt;লয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.45%); opacity: 0.82" title="-0.097"&gt;বলছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে, &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.32%); opacity: 0.84" title="-0.227"&gt;বর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্তমা&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.33%); opacity: 0.81" title="-0.064"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.70%); opacity: 0.82" title="-0.092"&gt;পর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;িস্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.73%); opacity: 0.81" title="-0.029"&gt;থ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.63%); opacity: 0.84" title="-0.196"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.63%); opacity: 0.84" title="-0.196"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.46%); opacity: 0.80" title="-0.010"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.43%); opacity: 0.80" title="-0.010"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.88%); opacity: 0.83" title="-0.147"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.09%); opacity: 0.82" title="-0.123"&gt;গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.50%); opacity: 0.83" title="-0.135"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.57%); opacity: 0.82" title="-0.095"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.36%); opacity: 0.81" title="-0.048"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.28%); opacity: 0.83" title="-0.139"&gt;অপর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.28%); opacity: 0.83" title="-0.139"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.74%); opacity: 0.82" title="0.110"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;। &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.59%); opacity: 0.81" title="0.060"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.99%); opacity: 0.85" title="-0.259"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 81.03%); opacity: 0.87" title="-0.362"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.52%); opacity: 0.82" title="-0.096"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.26%); opacity: 0.82" title="-0.119"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ূ&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.69%); opacity: 0.81" title="0.030"&gt;রত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 83.53%); opacity: 0.86" title="-0.295"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.56%); opacity: 0.84" title="-0.198"&gt;বজ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.60%); opacity: 0.83" title="0.133"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.63%); opacity: 0.83" title="-0.132"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.08%); opacity: 0.80" title="-0.005"&gt;খ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.45%); opacity: 0.81" title="0.033"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.93%); opacity: 0.82" title="-0.126"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.13%); opacity: 0.80" title="-0.004"&gt;রন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.89%); opacity: 0.81" title="0.041"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.25%); opacity: 0.81" title="-0.066"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.99%); opacity: 0.80" title="-0.006"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.06%); opacity: 0.83" title="0.165"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.66%); opacity: 0.82" title="-0.093"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.41%); opacity: 0.82" title="-0.117"&gt;কট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.47%); opacity: 0.81" title="0.047"&gt;ওষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.73%); opacity: 0.81" title="0.058"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.29%); opacity: 0.82" title="-0.119"&gt;ও&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.38%); opacity: 0.80" title="0.021"&gt;অন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.14%); opacity: 0.83" title="0.163"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.06%); opacity: 0.81" title="-0.038"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.18%); opacity: 0.83" title="0.162"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.14%); opacity: 0.86" title="0.305"&gt;অত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.36%); opacity: 0.82" title="0.099"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;াবশ্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.45%); opacity: 0.81" title="0.033"&gt;যক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ী&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 81.82%); opacity: 0.86" title="0.340"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.00%); opacity: 0.83" title="0.166"&gt;পণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.81%); opacity: 0.81" title="0.028"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.40%); opacity: 0.81" title="-0.048"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৌ&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.95%); opacity: 0.82" title="-0.088"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.18%); opacity: 0.81" title="-0.051"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.74%); opacity: 0.80" title="0.017"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.65%); opacity: 0.84" title="-0.196"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 87.89%); opacity: 0.84" title="-0.190"&gt;দ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.67%); opacity: 0.80" title="-0.001"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.17%); opacity: 0.81" title="-0.067"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.36%); opacity: 0.81" title="-0.048"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 99.69%); opacity: 0.80" title="0.001"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.11%); opacity: 0.83" title="0.143"&gt;লন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.72%); opacity: 0.83" title="0.172"&gt;করছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.19%); opacity: 0.84" title="0.230"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.71%); opacity: 0.81" title="0.030"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;। &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.26%); opacity: 0.81" title="-0.066"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 99.00%); opacity: 0.80" title="-0.005"&gt;ণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.59%); opacity: 0.82" title="-0.113"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 93.37%); opacity: 0.82" title="-0.081"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.45%); opacity: 0.83" title="0.136"&gt;মন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.24%); opacity: 0.81" title="0.066"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 91.61%); opacity: 0.82" title="-0.113"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.05%); opacity: 0.80" title="-0.014"&gt;লয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 99.45%); opacity: 0.80" title="0.002"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.79%); opacity: 0.81" title="0.042"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.69%); opacity: 0.81" title="0.030"&gt;রত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.03%); opacity: 0.81" title="-0.069"&gt;যক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.94%); opacity: 0.85" title="-0.260"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.44%); opacity: 0.85" title="-0.272"&gt;উদ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 80.37%); opacity: 0.87" title="0.380"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.04%); opacity: 0.81" title="0.053"&gt;গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.88%); opacity: 0.81" title="-0.027"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.43%); opacity: 0.80" title="-0.010"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.72%); opacity: 0.81" title="0.043"&gt;অ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.81%); opacity: 0.81" title="0.028"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.92%); opacity: 0.81" title="-0.027"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.09%); opacity: 0.83" title="-0.164"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.35%); opacity: 0.81" title="-0.064"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.94%); opacity: 0.83" title="0.167"&gt;শন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.00%); opacity: 0.81" title="0.070"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.54%); opacity: 0.80" title="0.020"&gt;সহয&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.64%); opacity: 0.82" title="0.093"&gt;গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.55%); opacity: 0.82" title="-0.095"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.54%); opacity: 0.83" title="0.154"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.35%); opacity: 0.81" title="0.064"&gt;এ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.30%); opacity: 0.82" title="-0.100"&gt;বছর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.77%); opacity: 0.81" title="0.029"&gt;আম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.78%); opacity: 0.83" title="0.171"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ৌ&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.59%); opacity: 0.81" title="0.060"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.13%); opacity: 0.83" title="-0.163"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.56%); opacity: 0.81" title="0.032"&gt;অন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 90.56%); opacity: 0.83" title="0.133"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.06%); opacity: 0.80" title="-0.014"&gt;ইন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.77%); opacity: 0.81" title="0.029"&gt;আম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.22%); opacity: 0.81" title="0.050"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 98.09%); opacity: 0.80" title="0.014"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.12%); opacity: 0.81" title="0.052"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; আয়ো&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.39%); opacity: 0.81" title="0.063"&gt;জন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.79%); opacity: 0.85" title="0.239"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.50%); opacity: 0.81" title="-0.046"&gt;হয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.89%); opacity: 0.83" title="0.168"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.32%); opacity: 0.80" title="-0.011"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.67%); opacity: 0.82" title="0.093"&gt;এব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ং &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.69%); opacity: 0.85" title="0.266"&gt;এই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.88%); opacity: 0.82" title="0.108"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.48%); opacity: 0.84" title="0.223"&gt;মস&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ূ&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.48%); opacity: 0.84" title="0.223"&gt;চ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 90.45%); opacity: 0.83" title="-0.136"&gt;বহ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ু&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.37%); opacity: 0.80" title="-0.011"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.76%); opacity: 0.80" title="-0.007"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.28%); opacity: 0.84" title="-0.228"&gt;রশ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ং&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.38%); opacity: 0.84" title="-0.225"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.00%); opacity: 0.82" title="-0.105"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 99.32%); opacity: 0.80" title="0.003"&gt;হয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.89%); opacity: 0.83" title="0.168"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.67%); opacity: 0.82" title="0.111"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;। &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.11%); opacity: 0.85" title="0.281"&gt;বর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্তমা&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.33%); opacity: 0.81" title="-0.064"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.46%); opacity: 0.80" title="-0.010"&gt;ই&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;-&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.22%); opacity: 0.82" title="0.101"&gt;কম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.90%); opacity: 0.83" title="-0.168"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.43%); opacity: 0.80" title="-0.010"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.42%); opacity: 0.82" title="0.098"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.94%); opacity: 0.83" title="0.146"&gt;ম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.51%); opacity: 0.81" title="0.062"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.16%); opacity: 0.81" title="-0.037"&gt;যম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 85.53%); opacity: 0.85" title="-0.246"&gt;ভ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.90%); opacity: 0.81" title="-0.027"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.55%); opacity: 0.82" title="-0.095"&gt;ত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;াসা&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.27%); opacity: 0.82" title="0.082"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.00%); opacity: 0.81" title="0.070"&gt;রণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.89%); opacity: 0.82" title="0.089"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.68%); opacity: 0.86" title="0.292"&gt;মধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.81%); opacity: 0.81" title="0.028"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.06%); opacity: 0.81" title="-0.038"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.85%); opacity: 0.81" title="0.041"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 99.39%); opacity: 0.80" title="0.003"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.69%); opacity: 0.83" title="0.173"&gt;যম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ূ&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 93.38%); opacity: 0.82" title="0.080"&gt;ল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.30%); opacity: 0.81" title="0.035"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.36%); opacity: 0.81" title="-0.064"&gt;ট&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.24%); opacity: 0.81" title="0.050"&gt;স&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 89.23%); opacity: 0.83" title="0.161"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.39%); opacity: 0.84" title="0.202"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.79%); opacity: 0.81" title="0.042"&gt;প&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.74%); opacity: 0.81" title="-0.029"&gt;য়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.61%); opacity: 0.83" title="-0.153"&gt;জ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.15%); opacity: 0.84" title="0.185"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 84.05%); opacity: 0.85" title="0.282"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.18%); opacity: 0.81" title="0.037"&gt;রয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 92.53%); opacity: 0.82" title="0.095"&gt;ক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.48%); opacity: 0.83" title="0.177"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 83.01%); opacity: 0.86" title="0.309"&gt;যক&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 70.22%); opacity: 0.93" title="0.688"&gt;রম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 80.09%); opacity: 0.87" title="0.387"&gt;সফলভ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.18%); opacity: 0.84" title="0.184"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 86.05%); opacity: 0.84" title="-0.233"&gt;চলম&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.56%); opacity: 0.85" title="-0.269"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 86.57%); opacity: 0.84" title="0.221"&gt;রয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 96.80%); opacity: 0.81" title="0.028"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে। &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.94%); opacity: 0.82" title="-0.088"&gt;ভব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.50%); opacity: 0.80" title="-0.010"&gt;ষ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.40%); opacity: 0.81" title="0.063"&gt;যত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 92.87%); opacity: 0.82" title="-0.089"&gt;এর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 98.20%); opacity: 0.80" title="-0.013"&gt;পর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 88.78%); opacity: 0.83" title="-0.171"&gt;ধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 97.15%); opacity: 0.80" title="-0.024"&gt;ব&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.78%); opacity: 0.80" title="0.017"&gt;ড়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 94.33%); opacity: 0.81" title="-0.064"&gt;ন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 96.16%); opacity: 0.81" title="-0.037"&gt;র&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 87.29%); opacity: 0.84" title="0.204"&gt;পর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ি&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 84.37%); opacity: 0.85" title="-0.274"&gt;কল&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 89.67%); opacity: 0.83" title="-0.152"&gt;পন&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 95.76%); opacity: 0.81" title="0.043"&gt;ইত&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ো&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 91.08%); opacity: 0.82" title="0.123"&gt;মধ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 88.84%); opacity: 0.83" title="0.169"&gt;য&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 94.12%); opacity: 0.81" title="0.068"&gt;গ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;্&lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 97.18%); opacity: 0.80" title="0.024"&gt;রহণ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt; &lt;/span&gt;&lt;span style="background-color: hsl(120, 100.00%, 85.52%); opacity: 0.85" title="0.246"&gt;কর&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;া &lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.50%); opacity: 0.81" title="-0.046"&gt;হয়&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে&lt;/span&gt;&lt;span style="background-color: hsl(0, 100.00%, 95.58%); opacity: 0.81" title="-0.045"&gt;ছ&lt;/span&gt;&lt;span style="opacity: 0.80"&gt;ে।&lt;/span&gt;
+&lt;/p&gt;
+</code></pre>
+<h2 id="_24">ট্রান্সফরমার্স মডেলের হিডেন স্টেট</h2>
+<p>এটা একটা টুপল, সেটার শেপ দেখা যাবে এখানে।</p>
+<p>৭৬৪ হচ্ছে DistilBERT মডেলের হিডেন ইউনিটের সংখ্যা।</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">TFAutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;/content/drive/MyDrive/Colab Notebooks/saved_model/bangla_news_predictor&#39;</span><span class="p">)</span>
+<span class="n">input_ids</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;আমরা বাংলায় কথা বলি&quot;</span><span class="p">))[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>  
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span>
+<span class="n">last_hidden_states</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">last_hidden_states</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>(1, 7, 768)
+</code></pre>
+<p>তবে আমরা যেই মডেলই ব্যবহার করিনা কেন, এর পেছনের লার্নার অবজেক্ট আসলে একটা টেন্সরফ্লো কেরাস মডেল।  এখানে কেট্রেইন র্যাপার হিসেবে কাজ করছে।  আমাদের লার্নার মডেলের সামারি দেখেছিলাম উপরে। </p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="ফুটার">
+      
+        
+        <a href="../class-json/" class="md-footer__link md-footer__link--prev" aria-label="পূর্ববর্তী: বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                পূর্ববর্তী
+              </span>
+              বাংলা পত্রিকা ক্ল্যাসিফিকেশন, ‘জেসন’ ফরম্যাটের ডাটাসেট
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../next/" class="md-footer__link md-footer__link--next" aria-label="পরে: ট্রান্সফরমার মডেল: কোথায় যাব সামনে?" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                পরে
+              </span>
+              ট্রান্সফরমার মডেল: কোথায় যাব সামনে?
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            সৃজনশীল লাইসেন্সিং ২০১৯ - ২০২০ &copy; রকিবুল হাসান
+          </div>
+        
+        
+        তৈরি
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          এমকেডকস ম্যাটেরিয়াল
+          </a>
+        
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/raqueeb" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="http://m.me/raqueeb" target="_blank" rel="noopener" title="m.me" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256.55 8C116.52 8 8 110.34 8 248.57c0 72.3 29.71 134.78 78.07 177.94 8.35 7.51 6.63 11.86 8.05 58.23A19.92 19.92 0 0 0 122 502.31c52.91-23.3 53.59-25.14 62.56-22.7C337.85 521.8 504 423.7 504 248.57 504 110.34 396.59 8 256.55 8zm149.24 185.13-73 115.57a37.37 37.37 0 0 1-53.91 9.93l-58.08-43.47a15 15 0 0 0-18 0l-78.37 59.44c-10.46 7.93-24.16-4.6-17.11-15.67l73-115.57a37.36 37.36 0 0 1 53.91-9.93l58.06 43.46a15 15 0 0 0 18 0l78.41-59.38c10.44-7.98 24.14 4.54 17.09 15.62z"/></svg>
+      </a>
+    
+      
+      
+      <a href="tel:+8801713095767" target="_blank" rel="noopener" title="" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/raqueeb" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://linkedin.com/in/raqueeb/" target="_blank" rel="noopener" title="linkedin.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://instagram.com/raqueeb" target="_blank" rel="noopener" title="instagram.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://facebook.com/raqueeb" target="_blank" rel="noopener" title="facebook.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["instant"], "translations": {"clipboard.copy": "\u0995\u09cd\u09b2\u09bf\u09aa\u09ac\u09cb\u09b0\u09cd\u09a1\u09c7 \u0995\u09aa\u09bf \u0995\u09b0\u09c1\u09a8", "clipboard.copied": "\u0995\u09cd\u09b2\u09bf\u09aa\u09ac\u09cb\u09b0\u09cd\u09a1\u09c7 \u0995\u09aa\u09bf \u09b9\u09df\u09c7\u099b\u09c7", "search.config.lang": "en", "search.config.pipeline": " ", "search.config.separator": "[\\s\\-]+", "search.placeholder": "\u09b8\u09be\u09b0\u09cd\u099a", "search.result.placeholder": "\u09b8\u09be\u09b0\u09cd\u099a \u099f\u09be\u0987\u09aa \u0995\u09b0\u09c1\u09a8", "search.result.none": "\u0995\u09bf\u099b\u09c1 \u09aa\u09be\u0993\u09df\u09be \u09af\u09be\u09df\u09a8\u09bf", "search.result.one": "\u09e7 \u099f\u09be \u09a1\u0995\u09c1\u09ae\u09c7\u09a8\u09cd\u099f", "search.result.other": "# \u099f\u09be \u09a1\u0995\u09c1\u09ae\u09c7\u09a8\u09cd\u099f", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
